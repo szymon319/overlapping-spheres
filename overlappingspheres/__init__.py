@@ -1,4 +1,4 @@
-from .functionality import greet
-from .functionality import minimum
+from .functionality import randompoint_on
+from .functionality import forces_total
 
-__all__ = ['greet', 'minimum']
+__all__ = ['randompoint_on', 'forces_total']
