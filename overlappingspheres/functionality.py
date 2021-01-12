@@ -3,12 +3,13 @@ from shapely.geometry import LineString, Point, Polygon
 import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import numpy as np
+# import numpy as np
 import random
 
 timestamp = 0.0001
 unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
 print(type(unitsquare))
+
 
 def randompoint_on(poly):
     """
@@ -79,8 +80,8 @@ def forces_total(pt, pts):
         # print(angleInDegrees)
 
         # distance = pt.distance(point)
-        distance = math.sqrt( ((point[0]-pt[0])**2)+((point[1]-pt[1])**2) )
-        
+        distance = math.sqrt( ( (point[0]-pt[0]) ** 2) + ( (point[1]-pt[1]) ** 2) )
+
         # force = 1 / distance
         force = ((1 / distance) ** 2) - (1 / distance)
 
@@ -157,6 +158,6 @@ def animate(i):
 ax.axis([-15, 15, -15, 15])
 # plt.plot(x, y, "r")
 
-myAnimation = animation.FuncAnimation(fig, animate, interval = 50, blit = False, repeat = True)
+myAnimation = animation.FuncAnimation(fig, animate, interval=50, blit=False, repeat=True)
 plt.draw()
 plt.show()
