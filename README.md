@@ -1,3 +1,4 @@
+![run os-tests](https://github.com/szymon319/overlapping-spheres/workflows/run%20os-tests/badge.svg)
 ![run unit tests](https://github.com/szymon319/overlapping-spheres/workflows/run%20unit%20tests/badge.svg)
 
 # OxRSE Continuous Integration course
