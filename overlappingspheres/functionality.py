@@ -68,19 +68,19 @@ def forces_total(pt, pts):
         The greeting
     """
     sum = [0, 0]
-    for point in pts:
-        if point == pt:
+    for pointpt in pts:
+        if pointpt == pt:
             continue
         # deltaX = point.x - pt.x
         # deltaY = point.y - pt.y
-        deltaX = point[0] - pt[0]
-        deltaY = point[1] - pt[1]
+        deltaX = pointpt[0] - pt[0]
+        deltaY = pointpt[1] - pt[1]
 
         angleInDegrees = math.atan2(deltaY, deltaX) * 180 / math.pi
         # print(angleInDegrees)
 
         # distance = pt.distance(point)
-        distance = math.sqrt(((point[0] - pt[0]) ** 2) + ((point[1] - pt[1]) ** 2))
+        distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
 
         # force = 1 / distance
         force = ((1 / distance) ** 2) - (1 / distance)
@@ -110,10 +110,10 @@ def advance(board):
     """
     newstate = set()
 
-    for point in board:
-        forces_shifted = forces_total(point, board)
+    for pointpt in board:
+        forces_shifted = forces_total(pointpt, board)
         # print(forces_shifted)
-        newstate.add((point[0] + timestamp * forces_shifted[0], point[1] + timestamp * forces_shifted[1]))
+        newstate.add((pointpt[0] + timestamp * forces_shifted[0], pointpt[1] + timestamp * forces_shifted[1]))
         # print(newstate)
 
     return newstate
@@ -122,8 +122,8 @@ def advance(board):
 points = randomly_scatter(100, unitsquare)
 x, y = unitsquare.exterior.xy
 
-xs = [point.x for point in points]
-ys = [point.y for point in points]
+xs = [pointpt.x for pointpt in points]
+ys = [pointpt.y for pointpt in points]
 tuples = list(zip(xs, ys))
 
 shifted = set(tuples)
