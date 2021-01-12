@@ -1,3 +1,4 @@
+[![BCH compliance](https://bettercodehub.com/edge/badge/szymon319/overlapping-spheres?branch=main)](https://bettercodehub.com/)
 [![codecov](https://codecov.io/gh/szymon319/overlapping-spheres/branch/main/graph/badge.svg?token=KAKJEUE2TL)](https://codecov.io/gh/szymon319/overlapping-spheres)
 ![run os-tests](https://github.com/szymon319/overlapping-spheres/workflows/run%20os-tests/badge.svg)
 ![run unit tests](https://github.com/szymon319/overlapping-spheres/workflows/run%20unit%20tests/badge.svg)
