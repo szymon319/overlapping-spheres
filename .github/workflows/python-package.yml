@@ -29,6 +29,7 @@ jobs:
         python -m pip install autoflake flake8
     - name: Lint with autoflake
       run: |
+        cd overlappingspheres/
         autoflake --in-place --remove-unused-variables functionality.py
     - name: Lint with flake8
       run: |
