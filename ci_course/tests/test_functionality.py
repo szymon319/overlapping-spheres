@@ -10,6 +10,7 @@ class TestFunctionality(unittest.TestCase):
         self.assertEqual(ci_course.greet("Fergus"), "Hello Fergus")
 
     def test_minimum(self):
+        self.assertEqual(ci_course.minimum(), None)
         self.assertEqual(ci_course.minimum(1, 2, 3), 1)
         self.assertEqual(ci_course.minimum(1.2, 2.3), 1.2)
         self.assertEqual(ci_course.minimum(-1.2, -3), -3)
