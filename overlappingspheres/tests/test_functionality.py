@@ -15,8 +15,8 @@ class TestFunctionality(unittest.TestCase):
         # self.assertEqual(overlappingspheres.greet("Fergus"), "Hello Fergus")
 
     def test_forces_total(self):
-        pt = Point([0, 0])
-        pts = [Point([1, 1])]
+        pt = (0, 0)
+        pts = {(1, 1)}
         y = forces_total(pt, pts)
         assert len(y) == 2
         # self.assertEqual(overlappingspheres.minimum(1, 2, 3), 1)
