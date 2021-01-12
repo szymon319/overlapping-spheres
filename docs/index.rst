@@ -10,6 +10,8 @@ Welcome to overlapping-spheres's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   quickstart
+
 Continuous integration
 
 Indices and tables
