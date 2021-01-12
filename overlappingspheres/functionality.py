@@ -80,7 +80,7 @@ def forces_total(pt, pts):
         # print(angleInDegrees)
 
         # distance = pt.distance(point)
-        distance = math.sqrt( ( (point[0]-pt[0]) ** 2) + ( (point[1]-pt[1]) ** 2) )
+        distance = math.sqrt(((point[0]-pt[0]) ** 2) + ((point[1]-pt[1]) ** 2))
 
         # force = 1 / distance
         force = ((1 / distance) ** 2) - (1 / distance)
