@@ -1,9 +1,10 @@
 from shapely.geometry import LineString, Point, Polygon
 
 import math
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-# import numpy as np
+import numpy as np
 import random
 
 timestamp = 0.0001
@@ -53,7 +54,7 @@ def randomly_scatter(n, poly):
     return points
 
 
-def forces_total(pt, pts):
+def forces_total(pt, pts, equation="inverse"):
     """
     A function that takes a name and returns a greeting.
 
@@ -82,8 +83,12 @@ def forces_total(pt, pts):
         # distance = pt.distance(point)
         distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
 
-        # force = 1 / distance
-        force = ((1 / distance) ** 2) - (1 / distance)
+        if equation == "inverse":
+            force = 1 / distance
+        elif equation == "inverse square":
+            force = ((1 / distance) ** 2) - (1 / distance)
+        else:
+            raise ValueError
 
         forceX = - force * math.cos(math.radians(angleInDegrees))
         forceY = - force * math.sin(math.radians(angleInDegrees))
@@ -119,19 +124,39 @@ def advance(board):
     return newstate
 
 
-points = randomly_scatter(100, unitsquare)
+pointsg = randomly_scatter(100, unitsquare)
+pointsm = randomly_scatter(100, unitsquare)
 x, y = unitsquare.exterior.xy
 
-xs = [pointpt.x for pointpt in points]
-ys = [pointpt.y for pointpt in points]
-tuples = list(zip(xs, ys))
+xsg = [pointpt.x for pointpt in pointsg]
+xsm = [pointpt.x for pointpt in pointsm]
+ysg = [pointpt.y for pointpt in pointsg]
+ysm = [pointpt.y for pointpt in pointsm]
+tuplesg = list(zip(xsg, ysg))
+tuplesm = list(zip(xsm, ysm))
 
-shifted = set(tuples)
+shiftedg = set(tuplesg)
+shiftedm = set(tuplesm)
 
 fig, ax = plt.subplots()
-x, y = zip(*shifted)
-mat, = ax.plot(x, y, 'o')
 
+xg, yg = zip(*shiftedg)
+xm, ym = zip(*shiftedm)
+
+# mat, = ax.plot(x, y, color='green', marker='o')
+
+newpoints = (xg, yg, "g",
+             xm, ym, "m")
+
+animlist = plt.plot(*newpoints, linestyle="None", marker="o")
+
+# colors = ["g", "m"]
+# levels = [0, 1]
+# timeDiff = [0] * 100 + [1] * 100
+# timeDiffInt = np.where(np.array(timeDiff) == 0, 0, 1)
+
+# cmap, norm = mpl.colors.from_levels_and_colors(levels=levels, colors=colors, extend="max")
+# mat, = ax.plot(x, y, c=timeDiffInt, marker="o", cmap=cmap, norm=norm)
 
 def animate(i):
     """
@@ -147,15 +172,28 @@ def animate(i):
     int, float
         The minimum
     """
-    global shifted
-    shifted = advance(shifted)
+    global shiftedg
+    global shiftedm
+    shiftedg = advance(shiftedg)
+    shiftedm = advance(shiftedm)
     # print(shifted)
-    x, y = zip(*shifted)
-    mat.set_data(x, y)
-    return mat,
 
+    xg, yg = zip(*shiftedg)
+    xm, ym = zip(*shiftedm)
 
-ax.axis([-15, 15, -15, 15])
+    # mat.set_data(x, y)
+    # return mat,
+
+    # newpoints = (xs[i], ys[i], "g",
+    #              xs[i], ys[i], "m")
+
+    newpoints = (xg, yg, "g",
+                 xm, ym, "m")
+
+    animlist = plt.plot(*newpoints, linestyle="None", marker="o")
+    return animlist
+
+ax.axis([-5, 5, -5, 5])
 # plt.plot(x, y, "r")
 
 myAnimation = animation.FuncAnimation(fig, animate, interval=50, blit=False, repeat=True)
