@@ -7,10 +7,6 @@ import matplotlib.animation as animation
 import numpy as np
 import random
 
-timestamp = 0.0001
-unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
-print(type(unitsquare))
-
 
 def randompoint_on(poly):
     """
@@ -99,7 +95,7 @@ def forces_total(pt, pts, equation="inverse"):
     return sum
 
 
-def advance(board):
+def advance(board, timestamp):
     """
     A function taking some arguments and returning the minimum number among the arguments.
 
@@ -124,41 +120,7 @@ def advance(board):
     return newstate
 
 
-pointsg = randomly_scatter(100, unitsquare)
-pointsm = randomly_scatter(100, unitsquare)
-x, y = unitsquare.exterior.xy
-
-xsg = [pointpt.x for pointpt in pointsg]
-xsm = [pointpt.x for pointpt in pointsm]
-ysg = [pointpt.y for pointpt in pointsg]
-ysm = [pointpt.y for pointpt in pointsm]
-tuplesg = list(zip(xsg, ysg))
-tuplesm = list(zip(xsm, ysm))
-
-shiftedg = set(tuplesg)
-shiftedm = set(tuplesm)
-
-fig, ax = plt.subplots()
-
-xg, yg = zip(*shiftedg)
-xm, ym = zip(*shiftedm)
-
-# mat, = ax.plot(x, y, color='green', marker='o')
-
-newpoints = (xg, yg, "g",
-             xm, ym, "m")
-
-animlist = plt.plot(*newpoints, linestyle="None", marker="o")
-
-# colors = ["g", "m"]
-# levels = [0, 1]
-# timeDiff = [0] * 100 + [1] * 100
-# timeDiffInt = np.where(np.array(timeDiff) == 0, 0, 1)
-
-# cmap, norm = mpl.colors.from_levels_and_colors(levels=levels, colors=colors, extend="max")
-# mat, = ax.plot(x, y, c=timeDiffInt, marker="o", cmap=cmap, norm=norm)
-
-def animate(i):
+def shift(noofpoints):
     """
     A function taking some arguments and returning the minimum number among the arguments.
 
@@ -172,30 +134,26 @@ def animate(i):
     int, float
         The minimum
     """
-    global shiftedg
-    global shiftedm
-    shiftedg = advance(shiftedg)
-    shiftedm = advance(shiftedm)
-    # print(shifted)
+    unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
+    pointsg = randomly_scatter(noofpoints, unitsquare)
 
-    xg, yg = zip(*shiftedg)
-    xm, ym = zip(*shiftedm)
+    xsg = [pointpt.x for pointpt in pointsg]
+    ysg = [pointpt.y for pointpt in pointsg]
 
-    # mat.set_data(x, y)
-    # return mat,
+    tuplesg = list(zip(xsg, ysg))
+    # shiftedg = set(tuplesg)
 
-    # newpoints = (xs[i], ys[i], "g",
-    #              xs[i], ys[i], "m")
+    return tuplesg
 
-    newpoints = (xg, yg, "g",
-                 xm, ym, "m")
+# shiftedg = set(shift(100))
 
-    animlist = plt.plot(*newpoints, linestyle="None", marker="o")
-    return animlist
+# fig, ax = plt.subplots()
 
-ax.axis([-5, 5, -5, 5])
-# plt.plot(x, y, "r")
+# xg, yg = zip(*shiftedg)
+# mat, = ax.plot(xg, yg, color='green', marker='o')
 
-myAnimation = animation.FuncAnimation(fig, animate, interval=50, blit=False, repeat=True)
-plt.draw()
-plt.show()
+# ax.axis([-5, 5, -5, 5])
+
+# myAnimation = animation.FuncAnimation(fig, animate, interval=50, blit=False, repeat=True)
+# plt.draw()
+# plt.show()
