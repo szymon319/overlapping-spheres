@@ -136,11 +136,16 @@ def shift(noofpoints):
     """
     unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
     pointsg = randomly_scatter(noofpoints, unitsquare)
+    # pointsm = randomly_scatter(noofpoints, unitsquare)
 
     xsg = [pointpt.x for pointpt in pointsg]
+    # xsm = [pointpt.x for pointpt in pointsm]
     ysg = [pointpt.y for pointpt in pointsg]
+    # ysm = [pointpt.y for pointpt in pointsm]
 
     tuplesg = list(zip(xsg, ysg))
+    # tuplesm = list(zip(xsm, ysm))
+
     # shiftedg = set(tuplesg)
 
     return tuplesg

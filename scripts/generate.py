@@ -15,11 +15,14 @@ from overlappingspheres.functionality import shift
 # from overlappingspheres.functionality import animate
 
 shiftedg = set(shift(100))
+shiftedm = set(shift(100))
 
 fig, ax = plt.subplots()
 
 xg, yg = zip(*shiftedg)
-mat, = ax.plot(xg, yg, color='green', marker='o')
+xm, ym = zip(*shiftedm)
+mat, = ax.plot(xg, yg, color='g', marker='o')
+mat, = ax.plot(xm, ym, color='m', marker='o')
 
 
 def animate(i):
@@ -37,20 +40,23 @@ def animate(i):
         The minimum
     """
     global shiftedg
-    # global shiftedm
+    global shiftedm
     # if not shiftedg:
     #     shiftedg = shift(100)
     shiftedg = advance(shiftedg, 0.0001)
-    # shiftedm = advance(shiftedm)
+    shiftedm = advance(shiftedm, 0.0001)
     # print(shifted)
 
     xg, yg = zip(*shiftedg)
-    # xm, ym = zip(*shiftedm)
+    xm, ym = zip(*shiftedm)
 
     # fig, ax = plt.subplots()
     # mat, = ax.plot(xg, yg, color='green', marker='o')
+    print(type(xg))
+    print((xg))
 
-    mat.set_data(xg, yg)
+    mat.set_data(xg + xm, yg + ym)
+    # mat.set_data(xm, ym)
     return mat,
 
     # newpoints = (xs[i], ys[i], "g",
