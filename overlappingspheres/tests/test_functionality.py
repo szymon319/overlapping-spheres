@@ -15,8 +15,8 @@ class TestFunctionality(unittest.TestCase):
     #     assert type(y) == np.array
 
     def test_forces_total(self):
-        pt = (0, 0)
-        pts = {(1, 1)}
+        pt = [0, 0, 0]
+        pts = [[1, 1, 1]]
         y = forces_total(pt, pts)
         assert len(y) == 2
         # self.assertEqual(overlappingspheres.minimum(1, 2, 3), 1)
