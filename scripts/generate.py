@@ -14,15 +14,45 @@ from overlappingspheres.functionality import advance
 from overlappingspheres.functionality import shift
 # from overlappingspheres.functionality import animate
 
-shiftedg = set(shift(100))
-shiftedm = set(shift(100))
+# shiftedg = set(shift(100))
+# shiftedm = set(shift(100))
+
+def get_colour(t):
+    if t == 0:
+        return 'g'
+    else:
+        return 'm'
+
+main = 100
+main2 = int(main / 2)
 
 fig, ax = plt.subplots()
+test = shift(main)
+# print((shift(100)))
+# print(type(shift(100)))
+# xg, yg = zip(*shiftedg)
+# xm, ym = zip(*shiftedm)
 
-xg, yg = zip(*shiftedg)
-xm, ym = zip(*shiftedm)
-mat, = ax.plot(xg, yg, color='g', marker='o')
-mat, = ax.plot(xm, ym, color='m', marker='o')
+C = np.array([[255, 0, 0], [0, 255, 0], [0, 0, 255]])
+test_colors = test[:, 2]
+print(test_colors.shape)
+# exit(0)
+
+# test_colors.apply(lambda x: )
+# print(test_colors)
+# exit(0)
+
+# mat, = ax.plot(test[:, 0], test[:, 1], c = C / 255.0, marker='o')
+# mat, = ax.plot(test[:, 0], test[:, 1], color=[get_colour(i) for i in test[:, 2]], marker='o')
+# mat, = ax.scatter(test[:, 0], test[:, 1], c=np.apply_along_axis(lambda x: [0,1.0,0], 1, test), marker='o')
+mat1, = ax.plot(test[:main2, 0], test[:main2, 1], c='g', linestyle='None', marker='o')
+mat2, = ax.plot(test[main2:, 0], test[main2:, 1], c='m', linestyle='None', marker='o')
+
+
+def init():
+    mat1.set_data([], [])
+    mat2.set_data([], [])
+    return mat1,
 
 
 def animate(i):
@@ -39,25 +69,32 @@ def animate(i):
     int, float
         The minimum
     """
-    global shiftedg
-    global shiftedm
+    # global shiftedg
+    global test
+    print(test)
+
+    # tuplesg = list(zip(test[:, 0], test[:, 1]))
+    # shiftedg = set(tuplesg)
     # if not shiftedg:
     #     shiftedg = shift(100)
-    shiftedg = advance(shiftedg, 0.0001)
-    shiftedm = advance(shiftedm, 0.0001)
+    test = advance(test, 0.0001)
+    # shiftedm = advance(shiftedm, 0.0001)
     # print(shifted)
 
-    xg, yg = zip(*shiftedg)
-    xm, ym = zip(*shiftedm)
+    # xsg = [pointpt[0] for pointpt in test]
+    # ysg = [pointpt[1] for pointpt in test]
+    # xm, ym = zip(*shiftedm)
 
     # fig, ax = plt.subplots()
     # mat, = ax.plot(xg, yg, color='green', marker='o')
-    print(type(xg))
-    print((xg))
+    # print(type(xg))
+    # print((xg))
 
-    mat.set_data(xg + xm, yg + ym)
-    # mat.set_data(xm, ym)
-    return mat,
+    # mat.set_data(xsg, ysg)
+    mat1.set_data(test[:main2, 0], test[:main2, 1])
+    mat2.set_data(test[main2:, 0], test[main2:, 1])
+    # mat.set_color('blue')
+    return mat1, mat2
 
     # newpoints = (xs[i], ys[i], "g",
     #              xs[i], ys[i], "m")
@@ -72,6 +109,6 @@ def animate(i):
 ax.axis([-5, 5, -5, 5])
 # plt.plot(x, y, "r")
 
-myAnimation = animation.FuncAnimation(fig, animate, interval=50, blit=False, repeat=True)
+myAnimation = animation.FuncAnimation(fig, animate, init_func=init, interval=50, blit=True, repeat=True)
 plt.draw()
 plt.show()

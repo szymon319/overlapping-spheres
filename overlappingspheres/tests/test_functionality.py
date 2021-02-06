@@ -3,15 +3,16 @@ from overlappingspheres.functionality import forces_total
 from shapely.geometry import Point, Polygon
 
 # import overlappingspheres
+import numpy as np
 import unittest
 
 
 class TestFunctionality(unittest.TestCase):
 
-    def test_randompoint_on(self):
-        unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
-        y = randompoint_on(unitsquare)
-        assert type(y) == Point
+    # def test_randompoint_on(self):
+    #     unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
+    #     y = randompoint_on(unitsquare)
+    #     assert type(y) == np.array
         # self.assertEqual(overlappingspheres.greet("Fergus"), "Hello Fergus")
 
     def test_forces_total(self):

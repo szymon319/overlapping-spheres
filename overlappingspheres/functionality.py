@@ -8,7 +8,7 @@ import numpy as np
 import random
 
 
-def randompoint_on(poly):
+def randompoint_on(poly, celltype:int):
     """
     A function that takes a name and returns a greeting.
 
@@ -28,8 +28,10 @@ def randompoint_on(poly):
     x_line = LineString([(x, min_y), (x, max_y)])
     x_line_intercept_min, x_line_intercept_max = x_line.intersection(poly).xy[1].tolist()
     y = random.uniform(x_line_intercept_min, x_line_intercept_max)
+    # celltype = random.randint(0, 1)
 
-    return Point([x, y])
+    # return Point([x, y])
+    return np.array([x, y, celltype])
 
 
 def randomly_scatter(n, poly):
@@ -46,9 +48,12 @@ def randomly_scatter(n, poly):
     str
         The greeting
     """
-    points = [randompoint_on(poly) for i in range(n)]
+    points = [randompoint_on(poly, 0) for i in range(int(n / 2))] + [randompoint_on(poly, 1) for i in range(int(n / 2), n)]
     return points
 
+
+# unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
+# print(randomly_scatter(100, unitsquare))
 
 def forces_total(pt, pts, equation="inverse"):
     """
@@ -66,7 +71,7 @@ def forces_total(pt, pts, equation="inverse"):
     """
     sum = [0, 0]
     for pointpt in pts:
-        if pointpt == pt:
+        if pointpt[0] == pt[0] and pointpt[1] == pt[1]:
             continue
         # deltaX = point.x - pt.x
         # deltaY = point.y - pt.y
@@ -78,16 +83,36 @@ def forces_total(pt, pts, equation="inverse"):
 
         # distance = pt.distance(point)
         distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
+        epsilon = 0.05
+        threshold2 = 1 / 2
+        # threshold20 = 1 / 20
 
         if equation == "inverse":
             force = 1 / distance
         elif equation == "inverse square":
             force = ((1 / distance) ** 2) - (1 / distance)
+        # elif equation == "Overlapping spheres":
+        #     if distance > threshold2:
+        #         force = 0
+        #     elif distance > threshold20:
+        #         force = - ((1 / distance) ** (1 / 2))
+        #     else:
+        #         force = 1 / distance
+        elif equation == "Lennard-Jones":
+            if distance > threshold2:
+                force = 0
+            else:
+                force = ((epsilon * 1 / distance) ** 12) - ((epsilon * 1 / distance) ** 6)
         else:
             raise ValueError
 
-        forceX = - force * math.cos(math.radians(angleInDegrees))
-        forceY = - force * math.sin(math.radians(angleInDegrees))
+        print(pointpt)
+        if pointpt[2] == pt[2]:
+            forceX = - force * math.cos(math.radians(angleInDegrees))
+            forceY = - force * math.sin(math.radians(angleInDegrees))
+        else:
+            forceX = - force * math.cos(math.radians(angleInDegrees)) * 10
+            forceY = - force * math.sin(math.radians(angleInDegrees)) * 10
 
         sum[0] += forceX
         sum[1] += forceY
@@ -109,15 +134,16 @@ def advance(board, timestamp):
     int, float
         The minimum
     """
-    newstate = set()
+    # newstate = set()
+    newstate = []
 
     for pointpt in board:
-        forces_shifted = forces_total(pointpt, board)
+        forces_shifted = forces_total(pointpt, board, "inverse")
         # print(forces_shifted)
-        newstate.add((pointpt[0] + timestamp * forces_shifted[0], pointpt[1] + timestamp * forces_shifted[1]))
+        newstate.append([pointpt[0] + timestamp * forces_shifted[0], pointpt[1] + timestamp * forces_shifted[1], pointpt[2]])
         # print(newstate)
 
-    return newstate
+    return np.array(newstate)
 
 
 def shift(noofpoints):
@@ -138,17 +164,17 @@ def shift(noofpoints):
     pointsg = randomly_scatter(noofpoints, unitsquare)
     # pointsm = randomly_scatter(noofpoints, unitsquare)
 
-    xsg = [pointpt.x for pointpt in pointsg]
+    # xsg = [pointpt[0] for pointpt in pointsg]
     # xsm = [pointpt.x for pointpt in pointsm]
-    ysg = [pointpt.y for pointpt in pointsg]
+    # ysg = [pointpt[1] for pointpt in pointsg]
     # ysm = [pointpt.y for pointpt in pointsm]
 
-    tuplesg = list(zip(xsg, ysg))
+    # tuplesg = list(zip(xsg, ysg))
     # tuplesm = list(zip(xsm, ysm))
 
     # shiftedg = set(tuplesg)
 
-    return tuplesg
+    return np.array(pointsg)
 
 # shiftedg = set(shift(100))
 
