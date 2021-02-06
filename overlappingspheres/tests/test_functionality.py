@@ -13,7 +13,6 @@ class TestFunctionality(unittest.TestCase):
     #     unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
     #     y = randompoint_on(unitsquare)
     #     assert type(y) == np.array
-        # self.assertEqual(overlappingspheres.greet("Fergus"), "Hello Fergus")
 
     def test_forces_total(self):
         pt = (0, 0)

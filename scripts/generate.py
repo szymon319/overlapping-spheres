@@ -17,11 +17,13 @@ from overlappingspheres.functionality import shift
 # shiftedg = set(shift(100))
 # shiftedm = set(shift(100))
 
+
 def get_colour(t):
     if t == 0:
         return 'g'
     else:
         return 'm'
+
 
 main = 100
 main2 = int(main / 2)

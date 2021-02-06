@@ -8,7 +8,7 @@ import numpy as np
 import random
 
 
-def randompoint_on(poly, celltype:int):
+def randompoint_on(poly, celltype: int):
     """
     A function that takes a name and returns a greeting.
 
