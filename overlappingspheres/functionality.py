@@ -85,12 +85,12 @@ def forces_total(pt, pts, equation="inverse"):
         distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
         epsilon = 0.05
         threshold2 = 1 / 2
-        # threshold20 = 1 / 20
+        threshold5 = 1 / 5
 
         if equation == "inverse":
             force = 1 / distance
         elif equation == "inverse square":
-            force = ((1 / distance) ** 2) - (1 / distance)
+            force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
         # elif equation == "Overlapping spheres":
         #     if distance > threshold2:
         #         force = 0
@@ -138,7 +138,7 @@ def advance(board, timestamp):
     newstate = []
 
     for pointpt in board:
-        forces_shifted = forces_total(pointpt, board, "inverse")
+        forces_shifted = forces_total(pointpt, board, "inverse square")
         # print(forces_shifted)
         newstate.append([pointpt[0] + timestamp * forces_shifted[0], pointpt[1] + timestamp * forces_shifted[1], pointpt[2]])
         # print(newstate)
@@ -160,7 +160,7 @@ def shift(noofpoints):
     int, float
         The minimum
     """
-    unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
+    unitsquare = Polygon([(0, 0), (5, 0), (5, 5), (0, 5)])
     pointsg = randomly_scatter(noofpoints, unitsquare)
     # pointsm = randomly_scatter(noofpoints, unitsquare)
 

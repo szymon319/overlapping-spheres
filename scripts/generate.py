@@ -79,7 +79,7 @@ def animate(i):
     # shiftedg = set(tuplesg)
     # if not shiftedg:
     #     shiftedg = shift(100)
-    test = advance(test, 0.0001)
+    test = advance(test, 0.0015)
     # shiftedm = advance(shiftedm, 0.0001)
     # print(shifted)
 
@@ -108,7 +108,7 @@ def animate(i):
     # return animlist
 
 
-ax.axis([-5, 5, -5, 5])
+ax.axis([0, 5, 0, 5])
 # plt.plot(x, y, "r")
 
 myAnimation = animation.FuncAnimation(fig, animate, init_func=init, interval=50, blit=True, repeat=True)
