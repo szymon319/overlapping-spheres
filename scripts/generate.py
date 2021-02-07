@@ -29,7 +29,9 @@ main = 100
 main2 = int(main / 2)
 
 fig, ax = plt.subplots()
-test = shift(main)
+# test = shift(main)
+test = np.array([[0, 0, 1], [5, 0, 1]])
+
 # print((shift(100)))
 # print(type(shift(100)))
 # xg, yg = zip(*shiftedg)
@@ -79,7 +81,10 @@ def animate(i):
     # shiftedg = set(tuplesg)
     # if not shiftedg:
     #     shiftedg = shift(100)
-    test = advance(test, 0.0015)
+
+    test = advance(test, 0.15)
+    # test = advance(test, 0.0015)
+    
     # shiftedm = advance(shiftedm, 0.0001)
     # print(shifted)
 
@@ -108,7 +113,7 @@ def animate(i):
     # return animlist
 
 
-ax.axis([0, 5, 0, 5])
+ax.axis([-1, 5, -1, 5])
 # plt.plot(x, y, "r")
 
 myAnimation = animation.FuncAnimation(fig, animate, init_func=init, interval=50, blit=True, repeat=True)

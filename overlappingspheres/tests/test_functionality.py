@@ -9,6 +9,12 @@ from shapely.geometry import Point, Polygon
 import numpy as np
 import unittest
 
+from math import log10, floor
+
+
+def round_sig(x, sig=2):
+    return round(x, sig-int(floor(log10(abs(x))))-1)
+
 
 class TestFunctionality(unittest.TestCase):
 
@@ -40,6 +46,18 @@ class TestFunctionality(unittest.TestCase):
         y = advance(testtest, 0.0001)
         # print(type(y))
         assert type(y) == np.ndarray
+
+        board = np.array([[0, 0, 1], [5, 0, 1]])
+        for i in range(int(1e3)):
+            y5 = advance(board, 0.15)
+            if y5[0][0] == board[0][0]:
+                break
+            else:
+                board = y5
+            print(i)
+        expectations = np.array([[2.1, 0, 1], [2.9, 0, 1]])
+        assert round_sig(y5[0][0]) == expectations[0][0]
+        assert round_sig(y5[1][0]) == expectations[1][0]
 
     def test_shift(self):
         y = shift(100)
