@@ -30,7 +30,8 @@ main2 = int(main / 2)
 
 fig, ax = plt.subplots()
 # test = shift(main)
-test = np.array([[0, 0, 1], [5, 0, 1]])
+# test = np.array([[0, 0, 1], [5, 0, 1]])
+test = np.array([[2.4, 0, 1], [2.6, 0, 1]])
 
 # print((shift(100)))
 # print(type(shift(100)))
@@ -82,7 +83,8 @@ def animate(i):
     # if not shiftedg:
     #     shiftedg = shift(100)
 
-    test = advance(test, 0.15)
+    # test = advance(test, 0.15)
+    test = advance(test, 0.015)
     # test = advance(test, 0.0015)
 
     # shiftedm = advance(shiftedm, 0.0001)

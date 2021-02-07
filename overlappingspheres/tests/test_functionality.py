@@ -59,6 +59,18 @@ class TestFunctionality(unittest.TestCase):
         assert round_sig(y5[0][0]) == expectations[0][0]
         assert round_sig(y5[1][0]) == expectations[1][0]
 
+        board6 = np.array([[2.4, 0, 1], [2.6, 0, 1]])
+        for i in range(int(1e4)):
+            y6 = advance(board6, 0.015)
+            if y6[0][0] == board6[0][0]:
+                break
+            else:
+                board6 = y6
+            print(i)
+        expectations6 = np.array([[2.1, 0, 1], [2.9, 0, 1]])
+        assert round_sig(y6[0][0]) == expectations6[0][0]
+        assert round_sig(y6[1][0]) == expectations6[1][0]
+
     def test_shift(self):
         y = shift(100)
         # print(type(y))
