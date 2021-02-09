@@ -1,3 +1,4 @@
+from scipy.spatial import KDTree, Voronoi
 from shapely.geometry import LineString, Point, Polygon
 
 import math
@@ -6,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
 import random
+import sys
 
 
 def randompoint_on(poly, celltype: int):
@@ -175,6 +177,69 @@ def shift(noofpoints):
     # shiftedg = set(tuplesg)
 
     return np.array(pointsg)
+
+
+def build_voronoi(points):
+    """
+    Build a Voronoi map from self.points. For background on self.voronoi attrs, see:
+    https://docs.scipy.org/doc/scipy-0.18.1/reference/generated/scipy.spatial.Voronoi.html
+    """
+    x = points[:, 0]
+    y = points[:, 0]
+    bounding_box = [min(x), max(x), min(y), max(y)]
+
+    eps = sys.float_info.epsilon
+    voronoi = Voronoi(points)
+    filtered_regions = [] # list of regions with vertices inside Voronoi map
+
+    for region in voronoi.regions:
+        inside_map = True    # is this region inside the Voronoi map?
+        for index in region: # index = the idx of a vertex in the current region
+
+            # check if index is inside Voronoi map (indices == -1 are outside map)
+            if index == -1:
+                inside_map = False
+                break
+
+            # check if the current coordinate is in the Voronoi map's bounding box
+            else:
+                coords = voronoi.vertices[index]
+                if not (bounding_box[0] - eps <= coords[0] and
+                        bounding_box[1] + eps >= coords[0] and
+                        bounding_box[2] - eps <= coords[1] and
+                        bounding_box[3] + eps >= coords[1]):
+                    inside_map = False
+                    break
+
+        # store hte region if it has vertices and is inside Voronoi map
+        if region != [] and inside_map:
+            filtered_regions.append(region)
+
+
+def find_centroid(vertices):
+    """
+    Find the centroid of a Voroni region described by `vertices`, and return a
+    np array with the x and y coords of that centroid.
+    The equation for the method used here to find the centroid of a 2D polygon
+    is given here: https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
+    @params: np.array `vertices` a numpy array with shape n,2
+    @returns np.array a numpy array that defines the x, y coords
+      of the centroid described by `vertices`
+    """
+    area = 0
+    centroid_x = 0
+    centroid_y = 0
+
+    for i in range(len(vertices) - 1):
+        step = (vertices[i, 0] * vertices[i+1, 1]) - (vertices[i+1, 0] * vertices[i, 1])
+        area += step
+        centroid_x += (vertices[i, 0] + vertices[i+1, 0]) * step
+        centroid_y += (vertices[i, 1] + vertices[i+1, 1]) * step
+    area /= 2
+    centroid_x = (1.0/(6.0*area)) * centroid_x
+    centroid_y = (1.0/(6.0*area)) * centroid_y
+    return np.array([[centroid_x, centroid_y]])
+
 
 # shiftedg = set(shift(100))
 
