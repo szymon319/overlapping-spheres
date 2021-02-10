@@ -33,7 +33,7 @@ class TestFunctionality(unittest.TestCase):
 
     def test_forces_total(self):
         pt = [0, 0, 0]
-        pts = [[1, 1, 1]]
+        pts = [[1, 1, 1], [0.02, 0, 1]]
         y = forces_total(pt, pts)
         assert type(y) == list
         assert len(y) == 2
@@ -42,7 +42,7 @@ class TestFunctionality(unittest.TestCase):
         # self.assertEqual(overlappingspheres.minimum(-1.2, -3), -3)
 
     def test_advance(self):
-        testtest = np.array([[0, 0, 1]])
+        testtest = np.array([[0, 0, 1], [0.02, 0, 1]])
         y = advance(testtest, 0.0001)
         # print(type(y))
         assert type(y) == np.ndarray
