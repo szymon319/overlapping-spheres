@@ -74,7 +74,7 @@ def forces_total(pt, ptspts, old, equation="inverse"):
 
     if old == "news":
         pts = cutoff(pt, ptspts, 0.05)
-    if old == "old":
+    elif old == "old":
         pts = ptspts
     else:
         raise ValueError
