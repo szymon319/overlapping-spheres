@@ -1,3 +1,4 @@
+from scipy import spatial
 from shapely.geometry import LineString, Point, Polygon
 
 import math
@@ -70,7 +71,8 @@ def forces_total(pt, pts, equation="inverse"):
         The greeting
     """
     sum = [0, 0]
-    for pointpt in pts:
+    # for pointpt in pts:
+    for pointpt in cutoff(pt, pts, 0.05):
         if pointpt[0] == pt[0] and pointpt[1] == pt[1]:
             continue
         # deltaX = point.x - pt.x
@@ -160,7 +162,8 @@ def shift(noofpoints):
     int, float
         The minimum
     """
-    unitsquare = Polygon([(0, 0), (5, 0), (5, 5), (0, 5)])
+    unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
+    # unitsquare = Polygon([(0, 0), (5, 0), (5, 5), (0, 5)])
     pointsg = randomly_scatter(noofpoints, unitsquare)
     # pointsm = randomly_scatter(noofpoints, unitsquare)
 
@@ -175,6 +178,36 @@ def shift(noofpoints):
     # shiftedg = set(tuplesg)
 
     return np.array(pointsg)
+
+
+def cutoff(ptt, ptts, cellsize):
+    """
+    A function taking some arguments and returning the minimum number among the arguments.
+
+    Parameters
+    ----------
+    args : int, float
+        The numbers from which to return the minimum
+
+    Returns
+    -------
+    int, float
+        The minimum
+    """
+    b = ptts[:, :-1]
+
+    tree = spatial.KDTree(b)
+    nearby_points = []
+    for results in tree.query_ball_point(([ptt[0], ptt[1]]), cellsize):
+        # print(results)
+        my_list = list(b[results])
+        my_listappend = my_list + [ptts[:, -1][results]]
+        # print(my_listappend)
+        nearby_points.append(my_listappend)
+        # print(nearby_points)
+
+    return np.array(nearby_points)
+
 
 # shiftedg = set(shift(100))
 

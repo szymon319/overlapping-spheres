@@ -13,6 +13,13 @@ from overlappingspheres.functionality import forces_total
 from overlappingspheres.functionality import advance
 from overlappingspheres.functionality import shift
 # from overlappingspheres.functionality import animate
+from overlappingspheres.functionality import cutoff
+
+pt = np.array([0.01, 0, 1])
+print(pt[0])
+pts = np.array([[0, 0, 1], [5, 0, 1], [0.02, 0, 1]])
+print(pts)
+print(cutoff(pt, pts, 0.01))
 
 # shiftedg = set(shift(100))
 # shiftedm = set(shift(100))
@@ -25,13 +32,13 @@ def get_colour(t):
         return 'm'
 
 
-main = 100
+main = 1000
 main2 = int(main / 2)
 
 fig, ax = plt.subplots()
-# test = shift(main)
+test = shift(main)
 # test = np.array([[0, 0, 1], [5, 0, 1]])
-test = np.array([[2.4, 0, 1], [2.6, 0, 1]])
+# test = np.array([[2.4, 0, 1], [2.6, 0, 1]])
 
 # print((shift(100)))
 # print(type(shift(100)))
@@ -84,8 +91,8 @@ def animate(i):
     #     shiftedg = shift(100)
 
     # test = advance(test, 0.15)
-    test = advance(test, 0.015)
-    # test = advance(test, 0.0015)
+    # test = advance(test, 0.015)
+    test = advance(test, 0.0015)
 
     # shiftedm = advance(shiftedm, 0.0001)
     # print(shifted)
