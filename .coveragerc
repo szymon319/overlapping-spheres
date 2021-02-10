@@ -1,4 +1,4 @@
 [run]
-source = ci_course
+source = overlappingspheres
 omit =
-    ci_course/tests/*
+    overlappingspheres/tests/*
