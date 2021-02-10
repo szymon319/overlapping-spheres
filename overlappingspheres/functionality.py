@@ -56,7 +56,7 @@ def randomly_scatter(n, poly):
 # unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
 # print(randomly_scatter(100, unitsquare))
 
-def forces_total(pt, pts, equation="inverse"):
+def forces_total(pt, ptspts, old, equation="inverse"):
     """
     A function that takes a name and returns a greeting.
 
@@ -71,8 +71,16 @@ def forces_total(pt, pts, equation="inverse"):
         The greeting
     """
     sum = [0, 0]
+
+    if old == "news":
+        pts = cutoff(pt, ptspts, 0.05)
+    if old == "old":
+        pts = ptspts
+    else:
+        raise ValueError
+
     # for pointpt in pts:
-    for pointpt in cutoff(pt, pts, 0.05):
+    for pointpt in pts:
         if pointpt[0] == pt[0] and pointpt[1] == pt[1]:
             continue
         # deltaX = point.x - pt.x
@@ -122,7 +130,7 @@ def forces_total(pt, pts, equation="inverse"):
     return sum
 
 
-def advance(board, timestamp):
+def advance(board, timestamp, old):
     """
     A function taking some arguments and returning the minimum number among the arguments.
 
@@ -140,7 +148,7 @@ def advance(board, timestamp):
     newstate = []
 
     for pointpt in board:
-        forces_shifted = forces_total(pointpt, board, "inverse square")
+        forces_shifted = forces_total(pointpt, board, old, "inverse square")
         # print(forces_shifted)
         newstate.append([pointpt[0] + timestamp * forces_shifted[0], pointpt[1] + timestamp * forces_shifted[1], pointpt[2]])
         # print(newstate)
@@ -221,3 +229,9 @@ def cutoff(ptt, ptts, cellsize):
 # myAnimation = animation.FuncAnimation(fig, animate, interval=50, blit=False, repeat=True)
 # plt.draw()
 # plt.show()
+
+# pt = [0, 0, 0]
+# pts = np.array([[1, 1, 1], [0.02, 0, 1]])
+# print(pts[:, :-1])
+# y = cutoff(pt, pts, 0.05)
+# print(y)

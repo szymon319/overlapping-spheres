@@ -33,8 +33,8 @@ class TestFunctionality(unittest.TestCase):
 
     def test_forces_total(self):
         pt = [0, 0, 0]
-        pts = [[1, 1, 1], [0.02, 0, 1]]
-        y = forces_total(pt, pts)
+        pts = np.array([[1, 1, 1], [0.02, 0, 1]])
+        y = forces_total(pt, pts, "news")
         assert type(y) == list
         assert len(y) == 2
         # self.assertEqual(overlappingspheres.minimum(1, 2, 3), 1)
@@ -43,13 +43,13 @@ class TestFunctionality(unittest.TestCase):
 
     def test_advance(self):
         testtest = np.array([[0, 0, 1], [0.02, 0, 1]])
-        y = advance(testtest, 0.0001)
+        y = advance(testtest, 0.0001, "old")
         # print(type(y))
         assert type(y) == np.ndarray
 
         board = np.array([[0, 0, 1], [5, 0, 1]])
         for i in range(int(1e3)):
-            y5 = advance(board, 0.15)
+            y5 = advance(board, 0.15, "old")
             if y5[0][0] == board[0][0]:
                 break
             else:
@@ -61,7 +61,7 @@ class TestFunctionality(unittest.TestCase):
 
         board6 = np.array([[2.4, 0, 1], [2.6, 0, 1]])
         for i in range(int(1e4)):
-            y6 = advance(board6, 0.015)
+            y6 = advance(board6, 0.015, "old")
             if y6[0][0] == board6[0][0]:
                 break
             else:
