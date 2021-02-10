@@ -2,5 +2,6 @@ autoflake==1.4
 flake8==3.8.4
 matplotlib==3.3.3
 numpy==1.19.5
+scipy==1.6.0
 Shapely==1.7.1
 Sphinx==3.4.3
