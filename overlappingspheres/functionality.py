@@ -1,4 +1,5 @@
 from scipy import spatial
+from scipy.spatial.distance import cdist
 from shapely.geometry import LineString, Point, Polygon
 
 import math
@@ -217,6 +218,37 @@ def cutoff(ptt, ptts, cellsize):
     return np.array(nearby_points)
 
 
+def fractional(board):
+    """
+    A function taking some arguments and returning the minimum number among the arguments.
+
+    Parameters
+    ----------
+    args : int, float
+        The numbers from which to return the minimum
+
+    Returns
+    -------
+    int, float
+        The minimum
+    """
+    # length = []
+    xsg = []
+    xsm = []
+    ysg = []
+    ysm = []
+
+    for pointpt in board:
+        if pointpt[2] == 0:
+            xsg.append(pointpt[0])
+            ysg.append(pointpt[1])
+        else:
+            xsm.append(pointpt[0])
+            ysm.append(pointpt[1])
+
+    return cdist(xsg, ysg, 'euclidean') + cdist(xsm, ysm, 'euclidean')
+
+
 # shiftedg = set(shift(100))
 
 # fig, ax = plt.subplots()
@@ -235,3 +267,6 @@ def cutoff(ptt, ptts, cellsize):
 # print(pts[:, :-1])
 # y = cutoff(pt, pts, 0.05)
 # print(y)
+
+test = np.array([[0, 0, 1], [5, 0, 1]])
+print(fractional(test))

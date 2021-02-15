@@ -32,6 +32,7 @@ def get_colour(t):
         return 'm'
 
 
+# main = 100
 main = 1000
 main2 = int(main / 2)
 
@@ -92,7 +93,8 @@ def animate(i):
 
     # test = advance(test, 0.15)
     # test = advance(test, 0.015)
-    test = advance(test, 0.0015)
+    test = advance(test, 0.0015, "news")
+    # test = advance(test, 0.0015, "old")
 
     # shiftedm = advance(shiftedm, 0.0001)
     # print(shifted)
