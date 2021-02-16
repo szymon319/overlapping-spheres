@@ -74,7 +74,8 @@ def forces_total(pt, ptspts, old, equation="inverse"):
     sum = [0, 0]
 
     if old == "news":
-        pts = cutoff(pt, ptspts, 0.05)
+        # pts = cutoff(pt, ptspts, 0.05)
+        pts = cutoff(pt, ptspts, 1 / 5)
     elif old == "old":
         pts = ptspts
     else:
@@ -101,7 +102,8 @@ def forces_total(pt, ptspts, old, equation="inverse"):
         if equation == "inverse":
             force = 1 / distance
         elif equation == "inverse square":
-            force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
+            # force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
+            force = + ((1 / (distance + 2 * threshold5)) ** 2) - (1 / (distance + threshold5))
         # elif equation == "Overlapping spheres":
         #     if distance > threshold2:
         #         force = 0
@@ -117,13 +119,15 @@ def forces_total(pt, ptspts, old, equation="inverse"):
         else:
             raise ValueError
 
+        mu = 0
+        sigma = threshold5
         # print(pointpt)
         if pointpt[2] == pt[2]:
-            forceX = - force * math.cos(math.radians(angleInDegrees))
-            forceY = - force * math.sin(math.radians(angleInDegrees))
+            forceX = - force * math.cos(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
+            forceY = - force * math.sin(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
         else:
-            forceX = - force * math.cos(math.radians(angleInDegrees)) * 10
-            forceY = - force * math.sin(math.radians(angleInDegrees)) * 10
+            forceX = - force * math.cos(math.radians(angleInDegrees)) * 10 + np.random.normal(mu, sigma)
+            forceY = - force * math.sin(math.radians(angleInDegrees)) * 10 + np.random.normal(mu, sigma)
 
         sum[0] += forceX
         sum[1] += forceY
