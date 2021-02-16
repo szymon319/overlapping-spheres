@@ -14,12 +14,13 @@ from overlappingspheres.functionality import advance
 from overlappingspheres.functionality import shift
 # from overlappingspheres.functionality import animate
 from overlappingspheres.functionality import cutoff
+from overlappingspheres.functionality import fractional
 
 pt = np.array([0.01, 0, 1])
-print(pt[0])
+# print(pt[0])
 pts = np.array([[0, 0, 1], [5, 0, 1], [0.02, 0, 1]])
-print(pts)
-print(cutoff(pt, pts, 0.01))
+# print(pts)
+# print(cutoff(pt, pts, 0.01))
 
 # shiftedg = set(shift(100))
 # shiftedm = set(shift(100))
@@ -41,6 +42,7 @@ test = shift(main)
 # test = np.array([[0, 0, 1], [5, 0, 1]])
 # test = np.array([[2.4, 0, 1], [2.6, 0, 1]])
 
+# print(fractional(test))
 # print((shift(100)))
 # print(type(shift(100)))
 # xg, yg = zip(*shiftedg)
@@ -48,7 +50,7 @@ test = shift(main)
 
 C = np.array([[255, 0, 0], [0, 255, 0], [0, 0, 255]])
 test_colors = test[:, 2]
-print(test_colors.shape)
+# print(test_colors.shape)
 # exit(0)
 
 # test_colors.apply(lambda x: )
@@ -68,6 +70,9 @@ def init():
     return mat1,
 
 
+xsfractional = []
+
+
 def animate(i):
     """
     A function taking some arguments and returning the minimum number among the arguments.
@@ -84,7 +89,7 @@ def animate(i):
     """
     # global shiftedg
     global test
-    print(test)
+    # print(test)
 
     # tuplesg = list(zip(test[:, 0], test[:, 1]))
     # shiftedg = set(tuplesg)
@@ -107,7 +112,8 @@ def animate(i):
     # mat, = ax.plot(xg, yg, color='green', marker='o')
     # print(type(xg))
     # print((xg))
-
+    xsfractional.append(fractional(test))
+    print(fractional(test))
     # mat.set_data(xsg, ysg)
     mat1.set_data(test[:main2, 0], test[:main2, 1])
     mat2.set_data(test[main2:, 0], test[main2:, 1])
@@ -129,4 +135,6 @@ ax.axis([-1, 5, -1, 5])
 
 myAnimation = animation.FuncAnimation(fig, animate, init_func=init, interval=50, blit=True, repeat=True)
 plt.draw()
+
+# plt.plot(xsfractional)
 plt.show()

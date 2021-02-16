@@ -117,7 +117,7 @@ def forces_total(pt, ptspts, old, equation="inverse"):
         else:
             raise ValueError
 
-        print(pointpt)
+        # print(pointpt)
         if pointpt[2] == pt[2]:
             forceX = - force * math.cos(math.radians(angleInDegrees))
             forceY = - force * math.sin(math.radians(angleInDegrees))
@@ -245,8 +245,12 @@ def fractional(board):
         else:
             xsm.append(pointpt[0])
             ysm.append(pointpt[1])
+    coordsg = np.array(list(zip(xsg, ysg))).reshape(len(xsg), -1)
+    coordsm = np.array(list(zip(xsm, ysm))).reshape(len(xsm), -1)
+    # print(coordsg)
+    # print(coordsm)
 
-    return cdist(xsg, ysg, 'euclidean') + cdist(xsm, ysm, 'euclidean')
+    return (np.sum(cdist(coordsg, coordsg, 'euclidean')) + np.sum(cdist(coordsm, coordsm, 'euclidean')))
 
 
 # shiftedg = set(shift(100))
@@ -268,5 +272,5 @@ def fractional(board):
 # y = cutoff(pt, pts, 0.05)
 # print(y)
 
-test = np.array([[0, 0, 1], [5, 0, 1]])
-print(fractional(test))
+# test = np.array([[0, 0, 1], [5, 0, 1], [5, 0, 0], [2, 2, 1]])
+# print(fractional(test))
