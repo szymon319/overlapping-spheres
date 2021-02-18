@@ -1,4 +1,4 @@
-from scipy.spatial import KDTree, Voronoi
+from scipy.spatial import KDTree, Voronoi, voronoi_plot_2d
 from shapely.geometry import LineString, Point, Polygon
 
 import math
@@ -253,3 +253,10 @@ def find_centroid(vertices):
 # myAnimation = animation.FuncAnimation(fig, animate, interval=50, blit=False, repeat=True)
 # plt.draw()
 # plt.show()
+
+points = np.array([[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2],
+                   [2, 0], [2, 1], [2, 2]])
+
+vor = Voronoi(points)
+fig = voronoi_plot_2d(vor)
+plt.show()
