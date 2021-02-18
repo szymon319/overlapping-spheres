@@ -96,6 +96,7 @@ def forces_total(pt, ptspts, old, equation="inverse"):
         # distance = pt.distance(point)
         distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
         epsilon = 0.05
+        # moo = 
         threshold2 = 1 / 2
         threshold5 = 1 / 5
 
@@ -115,6 +116,13 @@ def forces_total(pt, ptspts, old, equation="inverse"):
                 force2 = 10 / distance
             else:
                 force2 = force_base * 10
+        elif equation == "paper":
+            if distance < 2:
+                force_base = - 2 * math.log(1 + (distance - 2) / 2)
+            else:
+                force_base = - (distance - 2) * math.exp(- 5 * (distance - 2) / 2)
+            force = 5 * force_base
+            force2 = 50 * force_base
         # elif equation == "Overlapping spheres":
         #     if distance > threshold2:
         #         force = 0
@@ -164,7 +172,7 @@ def advance(board, timestamp, old):
     newstate = []
 
     for pointpt in board:
-        forces_shifted = forces_total(pointpt, board, old, "inverse square")
+        forces_shifted = forces_total(pointpt, board, old, "paper")
         # print(forces_shifted)
         newstate.append([pointpt[0] + timestamp * forces_shifted[0], pointpt[1] + timestamp * forces_shifted[1], pointpt[2]])
         # print(newstate)
