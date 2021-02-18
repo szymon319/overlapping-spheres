@@ -40,7 +40,7 @@ main2 = int(main / 2)
 fig, ax = plt.subplots()
 test = shift(main)
 # test = np.array([[0, 0, 1], [5, 0, 1]])
-# test = np.array([[2.4, 0, 1], [2.6, 0, 1]])
+# test = np.array([[2.4, 0, 1], [2.6, 0, 1], [2.8, 0, 0]])
 
 # print(fractional(test))
 # print((shift(100)))
@@ -98,7 +98,7 @@ def animate(i):
 
     # test = advance(test, 0.15)
     # test = advance(test, 0.015)
-    test = advance(test, 0.0015, "news")
+    test = advance(test, 0.015, "news")
     # test = advance(test, 0.0015, "old")
 
     # shiftedm = advance(shiftedm, 0.0001)
@@ -130,7 +130,7 @@ def animate(i):
     # return animlist
 
 
-ax.axis([-1, 5, -1, 5])
+ax.axis([-1, 30, -1, 30])
 # plt.plot(x, y, "r")
 
 myAnimation = animation.FuncAnimation(fig, animate, init_func=init, interval=50, blit=True, repeat=True)

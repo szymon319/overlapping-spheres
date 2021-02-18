@@ -75,7 +75,7 @@ def forces_total(pt, ptspts, old, equation="inverse"):
 
     if old == "news":
         # pts = cutoff(pt, ptspts, 0.05)
-        pts = cutoff(pt, ptspts, 1 / 5)
+        pts = cutoff(pt, ptspts, 5)
     elif old == "old":
         pts = ptspts
     else:
@@ -103,7 +103,18 @@ def forces_total(pt, ptspts, old, equation="inverse"):
             force = 1 / distance
         elif equation == "inverse square":
             # force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
-            force = + ((1 / (distance + 2 * threshold5)) ** 2) - (1 / (distance + threshold5))
+            force_base = + ((1 / (distance + 2 * threshold5)) ** 2) - (1 / (distance + threshold5))
+            if distance < 1.707:
+                force = 1 / distance
+            else:
+                force = force_base
+
+            if distance > 2:
+                force2 = force_base * 1 / 10
+            elif distance < 1.707:
+                force2 = 10 / distance
+            else:
+                force2 = force_base * 10
         # elif equation == "Overlapping spheres":
         #     if distance > threshold2:
         #         force = 0
@@ -126,8 +137,8 @@ def forces_total(pt, ptspts, old, equation="inverse"):
             forceX = - force * math.cos(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
             forceY = - force * math.sin(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
         else:
-            forceX = - force * math.cos(math.radians(angleInDegrees)) * 10 + np.random.normal(mu, sigma)
-            forceY = - force * math.sin(math.radians(angleInDegrees)) * 10 + np.random.normal(mu, sigma)
+            forceX = - force2 * math.cos(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
+            forceY = - force2 * math.sin(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
 
         sum[0] += forceX
         sum[1] += forceY
@@ -175,7 +186,7 @@ def shift(noofpoints):
     int, float
         The minimum
     """
-    unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
+    unitsquare = Polygon([(0, 0), (30, 0), (30, 30), (0, 30)])
     # unitsquare = Polygon([(0, 0), (5, 0), (5, 5), (0, 5)])
     pointsg = randomly_scatter(noofpoints, unitsquare)
     # pointsm = randomly_scatter(noofpoints, unitsquare)
