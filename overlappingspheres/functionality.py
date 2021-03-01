@@ -1,5 +1,6 @@
 from scipy import spatial
 from scipy.spatial.distance import cdist
+from scipy.spatial import Voronoi, voronoi_plot_2d
 from shapely.geometry import LineString, Point, Polygon
 
 import math
@@ -276,6 +277,43 @@ def fractional(board):
     return (np.sum(cdist(coordsg, coordsg, 'euclidean')) + np.sum(cdist(coordsm, coordsm, 'euclidean')))
 
 
+def voronoipts(ptts):
+    """
+    A function taking some arguments and returning the minimum number among the arguments.
+
+    Parameters
+    ----------
+    args : int, float
+        The numbers from which to return the minimum
+
+    Returns
+    -------
+    int, float
+        The minimum
+    """
+    # Calculate Voronoi Regions
+    xsg = []
+    xsm = []
+    ysg = []
+    ysm = []
+
+    for pointpt in ptts:
+        if pointpt[2] == 0:
+            xsg.append(pointpt[0])
+            ysg.append(pointpt[1])
+        else:
+            xsm.append(pointpt[0])
+            ysm.append(pointpt[1])
+
+    coordsg = np.array(list(zip(xsg, ysg))).reshape(len(xsg), -1)
+    # coordsm = np.array(list(zip(xsm, ysm))).reshape(len(xsm), -1)
+
+    # poly_shapes, pts, poly_to_pt_assignments = voronoi_regions_from_coords(coords, boundary_shape)
+    vor = Voronoi(coordsg)
+
+    return vor
+
+
 # shiftedg = set(shift(100))
 
 # fig, ax = plt.subplots()
@@ -297,3 +335,6 @@ def fractional(board):
 
 # test = np.array([[0, 0, 1], [5, 0, 1], [5, 0, 0], [2, 2, 1]])
 # print(fractional(test))
+
+fig = voronoi_plot_2d(voronoipts(shift(100)))
+plt.show()
