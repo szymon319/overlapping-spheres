@@ -94,16 +94,17 @@ for vpair in vor.ridge_vertices:
         # print(center_vpair2)
         # print(mpoints.tolist())
 
-        l_input = [[center_vpair1, center_vpair2],
-                mpoints.tolist()]
+        l_input = [
+            [center_vpair1, center_vpair2],
+            mpoints.tolist()
+        ]
 
         output = list(map(list, zip(l_input[0], map(lambda pt: get_min_point(pt, l_input[1]), l_input[0]))))
         print(output)
         print(output[0][1])
 
-        if mrandom[np.logical_and(output[0][1][0] == mrandom[:, 0], output[0][1][1] == mrandom[:, 1]), 2] == \
-            mrandom[np.logical_and(output[1][1][0] == mrandom[:, 0], output[1][1][1] == mrandom[:, 1]), 2]:
-                mmetric += len_vpair
+        if mrandom[np.logical_and(output[0][1][0] == mrandom[:, 0], output[0][1][1] == mrandom[:, 1]), 2] == mrandom[np.logical_and(output[1][1][0] == mrandom[:, 0], output[1][1][1] == mrandom[:, 1]), 2]:
+            mmetric += len_vpair
 
 print(mmetric)
 
