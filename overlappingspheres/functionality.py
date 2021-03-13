@@ -100,12 +100,13 @@ def forces_total(pt, ptspts, old, equation="inverse"):
 
         # distance = pt.distance(point)
         distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
-        epsilon = 0.05
-        threshold2 = 1 / 2
+        # epsilon = 0.05
+        # threshold2 = 1 / 2
         threshold5 = 1 / 5
 
         if equation == "inverse":
             force = 1 / distance
+            force2 = 1 / distance
         # elif equation == "inverse square":
         #     # force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
         #     force_base = + ((1 / (distance + 2 * threshold5)) ** 2) - (1 / (distance + threshold5))
