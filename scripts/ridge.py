@@ -12,7 +12,7 @@ mrandom = np.array(randomly_scatter(50, unitsquare))
 
 # print(mrandom[3, 0])
 # print(np.isclose(mrandom[3, 0], 26.76538703))
-mrandom[np.logical_and(np.isclose(26.76538703, mrandom[:, 0]), np.isclose(2.60816498, mrandom[:, 1])), 2]+= 12
+mrandom[np.logical_and(np.isclose(26.76538703, mrandom[:, 0]), np.isclose(2.60816498, mrandom[:, 1])), 2] += 12
 print(mrandom)
 
 mpoints = np.delete(mrandom, np.s_[2:3], axis=1)
@@ -36,13 +36,14 @@ print(vor.ridge_vertices)
 
 # plt.show()
 
+
 def slope(x1, y1, x2, y2):
     if x1 == x2:
         return "vertical"
     elif y1 == y2:
         return "horizontal"
     else:
-        m = (y2-y1)/(x2-x1)
+        m = (y2 - y1) / (x2 - x1)
         return m
 
 
@@ -53,6 +54,7 @@ def sq_distance(x1, x2):
 def get_min_point(point, points):
     dists = list(map(lambda x: sq_distance(x, point), points))
     return points[dists.index(min(dists))]
+
 
 mmetric = 0
 
@@ -78,8 +80,8 @@ for vpair in vor.ridge_vertices:
             dy = 1e-5
             dx = 0
         else:
-            dy = math.sqrt((1e-5)**2/(float(slope_vpair)**2 + 1))
-            dx = - float(slope_vpair)*dy
+            dy = math.sqrt((1e-5)**2 / (float(slope_vpair)**2 + 1))
+            dx = - float(slope_vpair) * dy
 
         center_vpair1 = []
         center_vpair1.append(center_vpair[0] + dx)
@@ -92,15 +94,15 @@ for vpair in vor.ridge_vertices:
         # print(center_vpair2)
         # print(mpoints.tolist())
 
-        l_input = [    [center_vpair1, center_vpair2], 
-                    mpoints.tolist()  ]
+        l_input = [[center_vpair1, center_vpair2],
+                    mpoints.tolist()]
 
         output = list(map(list, zip(l_input[0], map(lambda pt: get_min_point(pt, l_input[1]), l_input[0]))))
         print(output)
         print(output[0][1])
 
-        if mrandom[np.logical_and(output[0][1][0]== mrandom[:, 0], output[0][1][1]== mrandom[:, 1]), 2] == \
-        mrandom[np.logical_and(output[1][1][0]== mrandom[:, 0], output[1][1][1]== mrandom[:, 1]), 2]:
+        if mrandom[np.logical_and(output[0][1][0] == mrandom[:, 0], output[0][1][1] == mrandom[:, 1]), 2] == \
+    mrandom[np.logical_and(output[1][1][0] == mrandom[:, 0], output[1][1][1] == mrandom[:, 1]), 2]:
             mmetric += len_vpair
 
 print(mmetric)

@@ -21,7 +21,7 @@ field = Field(new_positions)
 # fig = voronoi_plot_2d(Voronoi(points))
 # plt.show()
 
-# for i in range(6): 
+# for i in range(6):
 #     field.relax()
 #     new_positions = field.get_points()
 
@@ -45,6 +45,7 @@ mat1, = ax.plot(new_positions[:, 0], new_positions[:, 1], c='g', linestyle='None
 #     if len(str(name)) < 2: name = '0' + str(name)
 #     plot.savefig( 'plots/' + str(name) + '.png' )
 
+
 def init():
     mat1.set_data([], [])
     return mat1,
@@ -57,6 +58,7 @@ def update(i):
     mat1.set_xdata(new_positions[:, 0])
     mat1.set_ydata(new_positions[:, 1])
     return mat1,
+
 
 myAnimation = animation.FuncAnimation(fig, update, init_func=init, interval=500, blit=True, repeat=True)
 plt.draw()

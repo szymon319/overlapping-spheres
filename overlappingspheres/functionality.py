@@ -14,6 +14,7 @@ import random
 np.random.seed(42)
 random.seed(42)
 
+
 def randompoint_on(poly, celltype: int):
     """
     A function that takes a name and returns a greeting.
@@ -100,26 +101,25 @@ def forces_total(pt, ptspts, old, equation="inverse"):
         # distance = pt.distance(point)
         distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
         epsilon = 0.05
-        # moo = 
         threshold2 = 1 / 2
         threshold5 = 1 / 5
 
         if equation == "inverse":
             force = 1 / distance
-        elif equation == "inverse square":
-            # force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
-            force_base = + ((1 / (distance + 2 * threshold5)) ** 2) - (1 / (distance + threshold5))
-            if distance < 1.707:
-                force = 1 / distance
-            else:
-                force = force_base
+        # elif equation == "inverse square":
+        #     # force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
+        #     force_base = + ((1 / (distance + 2 * threshold5)) ** 2) - (1 / (distance + threshold5))
+        #     if distance < 1.707:
+        #         force = 1 / distance
+        #     else:
+        #         force = force_base
 
-            if distance > 2:
-                force2 = force_base * 1 / 10
-            elif distance < 1.707:
-                force2 = 10 / distance
-            else:
-                force2 = force_base * 10
+        #     if distance > 2:
+        #         force2 = force_base * 1 / 10
+        #     elif distance < 1.707:
+        #         force2 = 10 / distance
+        #     else:
+        #         force2 = force_base * 10
         elif equation == "paper":
             if distance < 2:
                 force_base = - 2 * math.log(1 + (distance - 2) / 2)
@@ -134,11 +134,11 @@ def forces_total(pt, ptspts, old, equation="inverse"):
         #         force = - ((1 / distance) ** (1 / 2))
         #     else:
         #         force = 1 / distance
-        elif equation == "Lennard-Jones":
-            if distance > threshold2:
-                force = 0
-            else:
-                force = ((epsilon * 1 / distance) ** 12) - ((epsilon * 1 / distance) ** 6)
+        # elif equation == "Lennard-Jones":
+        #     if distance > threshold2:
+        #         force = 0
+        #     else:
+        #         force = ((epsilon * 1 / distance) ** 12) - ((epsilon * 1 / distance) ** 6)
         else:
             raise ValueError
 
@@ -222,7 +222,7 @@ def shift(noofpoints):
     coordsg = np.delete(pointsg, np.s_[2:3], axis=1)
     # print(coordsg)
     field = Field(coordsg)
-    for i in range(int(3e4)): 
+    for i in range(int(3e4)):
         field.relax()
         new_positions = field.get_points()
 
