@@ -1,3 +1,4 @@
+from lloyd import Field
 from scipy import spatial
 from scipy.spatial.distance import cdist
 from scipy.spatial import Voronoi, voronoi_plot_2d
@@ -10,6 +11,8 @@ import matplotlib.animation as animation
 import numpy as np
 import random
 
+np.random.seed(42)
+random.seed(42)
 
 def randompoint_on(poly, celltype: int):
     """
@@ -197,8 +200,34 @@ def shift(noofpoints):
     """
     unitsquare = Polygon([(0, 0), (30, 0), (30, 30), (0, 30)])
     # unitsquare = Polygon([(0, 0), (5, 0), (5, 5), (0, 5)])
-    pointsg = randomly_scatter(noofpoints, unitsquare)
+    pointsg = np.array(randomly_scatter(noofpoints, unitsquare))
+    # print(pointsg)
     # pointsm = randomly_scatter(noofpoints, unitsquare)
+
+    # xsg = []
+    # xsm = []
+    # ysg = []
+    # ysm = []
+
+    # for pointpt in pointsg:
+    #     if pointpt[2] == 0:
+    #         xsg.append(pointpt[0])
+    #         ysg.append(pointpt[1])
+    #     else:
+    #         xsm.append(pointpt[0])
+    #         ysm.append(pointpt[1])
+
+    # coordsg = np.array(list(zip(xsg, ysg))).reshape(len(xsg), -1)
+
+    coordsg = np.delete(pointsg, np.s_[2:3], axis=1)
+    # print(coordsg)
+    field = Field(coordsg)
+    for i in range(int(3e4)): 
+        field.relax()
+        new_positions = field.get_points()
+
+    outputg = np.c_[new_positions, pointsg[:, 2]]
+    # outputg = np.c_[coordsg, pointsg[:, 2]]
 
     # xsg = [pointpt[0] for pointpt in pointsg]
     # xsm = [pointpt.x for pointpt in pointsm]
@@ -210,7 +239,7 @@ def shift(noofpoints):
 
     # shiftedg = set(tuplesg)
 
-    return np.array(pointsg)
+    return outputg
 
 
 def cutoff(ptt, ptts, cellsize):
@@ -336,5 +365,7 @@ def voronoipts(ptts):
 # test = np.array([[0, 0, 1], [5, 0, 1], [5, 0, 0], [2, 2, 1]])
 # print(fractional(test))
 
-fig = voronoi_plot_2d(voronoipts(shift(100)))
-plt.show()
+# fig = voronoi_plot_2d(voronoipts(shift(20)))
+# plt.show()
+
+# print()
