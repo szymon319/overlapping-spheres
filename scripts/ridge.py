@@ -12,7 +12,7 @@ mrandom = np.array(randomly_scatter(50, unitsquare))
 
 # print(mrandom[3, 0])
 # print(np.isclose(mrandom[3, 0], 26.76538703))
-mrandom[np.logical_and(np.isclose(26.76538703, mrandom[:, 0]), np.isclose(2.60816498, mrandom[:, 1])), 2] += 12
+# mrandom[np.logical_and(np.isclose(26.76538703, mrandom[:, 0]), np.isclose(2.60816498, mrandom[:, 1])), 2] += 12
 print(mrandom)
 
 mpoints = np.delete(mrandom, np.s_[2:3], axis=1)
@@ -65,7 +65,9 @@ for vpair in vor.ridge_vertices:
         # print(type(v0))
         print(v0, v1)
 
-        len_vpair = math.hypot(v1[0] - v0[0], v1[1] - v0[1])
+        # len_vpair = math.hypot(v1[0] - v0[0], v1[1] - v0[1])
+        len_vpair = math.sqrt(sq_distance(v0, v1))
+
         center_vpair = np.array([0.5 * (v1[0] + v0[0]), 0.5 * (v1[1] + v0[1])])
         print(center_vpair)
 
@@ -83,13 +85,13 @@ for vpair in vor.ridge_vertices:
             dy = math.sqrt((1e-5)**2 / (float(slope_vpair)**2 + 1))
             dx = - float(slope_vpair) * dy
 
-        center_vpair1 = []
-        center_vpair1.append(center_vpair[0] + dx)
-        center_vpair1.append(center_vpair[1] + dy)
+        center_vpair1 = [center_vpair[0] + dx, center_vpair[1] + dy]
+        # center_vpair1.append(center_vpair[0] + dx)
+        # center_vpair1.append(center_vpair[1] + dy)
 
-        center_vpair2 = []
-        center_vpair2.append(center_vpair[0] - dx)
-        center_vpair2.append(center_vpair[1] - dy)
+        center_vpair2 = [center_vpair[0] - dx, center_vpair[1] - dy]
+        # center_vpair2.append(center_vpair[0] - dx)
+        # center_vpair2.append(center_vpair[1] - dy)
 
         # print(center_vpair2)
         # print(mpoints.tolist())

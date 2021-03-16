@@ -222,13 +222,13 @@ def shift(noofpoints):
 
     coordsg = np.delete(pointsg, np.s_[2:3], axis=1)
     # print(coordsg)
-    field = Field(coordsg)
-    for i in range(int(3e4)):
-        field.relax()
-        new_positions = field.get_points()
+    # field = Field(coordsg)
+    # for i in range(int(3e4)):
+    #     field.relax()
+    #     new_positions = field.get_points()
 
-    outputg = np.c_[new_positions, pointsg[:, 2]]
-    # outputg = np.c_[coordsg, pointsg[:, 2]]
+    # outputg = np.c_[new_positions, pointsg[:, 2]]
+    outputg = np.c_[coordsg, pointsg[:, 2]]
 
     # xsg = [pointpt[0] for pointpt in pointsg]
     # xsm = [pointpt.x for pointpt in pointsm]
@@ -272,7 +272,7 @@ def cutoff(ptt, ptts, cellsize):
     return np.array(nearby_points)
 
 
-def fractional(board):
+def metricpoints(board):
     """
     A function taking some arguments and returning the minimum number among the arguments.
 
@@ -305,6 +305,81 @@ def fractional(board):
     # print(coordsm)
 
     return (np.sum(cdist(coordsg, coordsg, 'euclidean')) + np.sum(cdist(coordsm, coordsm, 'euclidean')))
+
+
+def slope(x1, y1, x2, y2):
+    if x1 == x2:
+        return "vertical"
+    elif y1 == y2:
+        return "horizontal"
+    else:
+        m = (y2 - y1) / (x2 - x1)
+        return m
+
+
+def sq_distance(x1, x2):
+    return sum(map(lambda x: (x[0] - x[1])**2, zip(x1, x2)))
+
+
+def get_min_point(point, points):
+    dists = list(map(lambda x: sq_distance(x, point), points))
+    return points[dists.index(min(dists))]
+
+
+def fractional(board):
+    """
+    A function taking some arguments and returning the minimum number among the arguments.
+
+    Parameters
+    ----------
+    args : int, float
+        The numbers from which to return the minimum
+
+    Returns
+    -------
+    int, float
+        The minimum
+    """
+    mpoints = np.delete(board, np.s_[2:3], axis=1)
+    vor = Voronoi(mpoints)
+
+    mmetric = 0
+    for vpair in vor.ridge_vertices:
+        if vpair[0] >= 0 and vpair[1] >= 0:
+            v0 = vor.vertices[vpair[0]]
+            v1 = vor.vertices[vpair[1]]
+
+            len_vpair = math.sqrt(sq_distance(v0, v1))
+            center_vpair = np.array([0.5 * (v1[0] + v0[0]), 0.5 * (v1[1] + v0[1])])
+            slope_vpair = slope(v0[0], v0[1], center_vpair[0], center_vpair[1])
+
+            if slope_vpair == "vertical":
+                dy = 0
+                dx = 1e-5
+            elif slope_vpair == "horizontal":
+                dy = 1e-5
+                dx = 0
+            else:
+                dy = math.sqrt((1e-5)**2 / (float(slope_vpair)**2 + 1))
+                dx = - float(slope_vpair) * dy
+
+            center_vpair1 = []
+            center_vpair1.append(center_vpair[0] + dx)
+            center_vpair1.append(center_vpair[1] + dy)
+
+            center_vpair2 = []
+            center_vpair2.append(center_vpair[0] - dx)
+            center_vpair2.append(center_vpair[1] - dy)
+
+            l_input = [
+                [center_vpair1, center_vpair2],
+                mpoints.tolist()
+            ]
+
+            output = list(map(list, zip(l_input[0], map(lambda pt: get_min_point(pt, l_input[1]), l_input[0]))))
+            if board[np.logical_and(output[0][1][0] == board[:, 0], output[0][1][1] == board[:, 1]), 2] == board[np.logical_and(output[1][1][0] == board[:, 0], output[1][1][1] == board[:, 1]), 2]:
+                mmetric += len_vpair
+    return mmetric
 
 
 def voronoipts(ptts):
