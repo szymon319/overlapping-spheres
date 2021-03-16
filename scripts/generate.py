@@ -35,7 +35,7 @@ def get_colour(t):
 
 
 # main = 100
-main = 1000
+main = 225
 main2 = int(main / 2)
 
 fig, ax = plt.subplots()
@@ -73,6 +73,8 @@ def init():
 
 xsfractional = []
 
+my_ccounter = 0
+
 
 def animate(i):
     """
@@ -90,6 +92,7 @@ def animate(i):
     """
     # global shiftedg
     global test
+    global my_ccounter
     # print(test)
 
     # tuplesg = list(zip(test[:, 0], test[:, 1]))
@@ -99,7 +102,8 @@ def animate(i):
 
     # test = advance(test, 0.15)
     # test = advance(test, 0.015)
-    test = advance(test, 0.015, "news")
+    test = advance(test, 0.015, "news", my_ccounter)
+    my_ccounter += 1
     # test = advance(test, 0.0015, "old")
 
     # shiftedm = advance(shiftedm, 0.0001)
@@ -131,7 +135,7 @@ def animate(i):
     # return animlist
 
 
-ax.axis([-1, 30, -1, 30])
+ax.axis([-10, 50, -10, 50])
 # plt.plot(x, y, "r")
 
 myAnimation = animation.FuncAnimation(fig, animate, init_func=init, interval=50, blit=True, repeat=True)

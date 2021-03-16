@@ -62,7 +62,7 @@ def randomly_scatter(n, poly):
 # unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
 # print(randomly_scatter(100, unitsquare))
 
-def forces_total(pt, ptspts, old, equation="inverse"):
+def forces_total(pt, ptspts, old, counter, equation="inverse"):
     """
     A function that takes a name and returns a greeting.
 
@@ -127,7 +127,10 @@ def forces_total(pt, ptspts, old, equation="inverse"):
             else:
                 force_base = + (distance - 2) * math.exp(- 5 * (distance - 2) / 2)
             force = 5 * force_base
-            force2 = 50 * force_base
+            if counter < 100:
+                force2 = 5 * force_base
+            else:
+                force2 = 50 * force_base
         # elif equation == "Overlapping spheres":
         #     if distance > threshold2:
         #         force = 0
@@ -159,7 +162,7 @@ def forces_total(pt, ptspts, old, equation="inverse"):
     return sum
 
 
-def advance(board, timestamp, old):
+def advance(board, timestamp, old, my_counter):
     """
     A function taking some arguments and returning the minimum number among the arguments.
 
@@ -177,9 +180,23 @@ def advance(board, timestamp, old):
     newstate = []
 
     for pointpt in board:
-        forces_shifted = forces_total(pointpt, board, old, "paper")
+        forces_shifted = forces_total(pointpt, board, old, my_counter, "paper")
         # print(forces_shifted)
-        newstate.append([pointpt[0] + timestamp * forces_shifted[0], pointpt[1] + timestamp * forces_shifted[1], pointpt[2]])
+        x_check = pointpt[0] + timestamp * forces_shifted[0]
+        y_check = pointpt[1] + timestamp * forces_shifted[1]
+        if x_check > 30:
+            x_coord = 30
+        elif x_check < 0:
+            x_coord = 0
+        else:
+            x_coord = x_check
+        if y_check > 30:
+            y_coord = 30
+        elif y_check < 0:
+            y_coord = 0
+        else:
+            y_coord = y_check
+        newstate.append([x_coord, y_coord, pointpt[2]])
         # print(newstate)
 
     return np.array(newstate)
