@@ -15,6 +15,7 @@ from overlappingspheres.functionality import shift
 # from overlappingspheres.functionality import animate
 from overlappingspheres.functionality import cutoff
 from overlappingspheres.functionality import fractional
+from overlappingspheres.functionality import metricpoints
 
 pt = np.array([0.01, 0, 1])
 # print(pt[0])
@@ -112,8 +113,8 @@ def animate(i):
     # mat, = ax.plot(xg, yg, color='green', marker='o')
     # print(type(xg))
     # print((xg))
-    xsfractional.append(fractional(test))
-    print(fractional(test))
+    xsfractional.append(metricpoints(test))
+    print(metricpoints(test))
     # mat.set_data(xsg, ysg)
     mat1.set_data(test[:main2, 0], test[:main2, 1])
     mat2.set_data(test[main2:, 0], test[main2:, 1])

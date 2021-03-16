@@ -125,7 +125,7 @@ def forces_total(pt, ptspts, old, equation="inverse"):
             if distance < 2:
                 force_base = - 2 * math.log(1 + (distance - 2) / 2)
             else:
-                force_base = - (distance - 2) * math.exp(- 5 * (distance - 2) / 2)
+                force_base = + (distance - 2) * math.exp(- 5 * (distance - 2) / 2)
             force = 5 * force_base
             force2 = 50 * force_base
         # elif equation == "Overlapping spheres":
