@@ -35,7 +35,7 @@ def get_colour(t):
 
 
 # main = 100
-main = 225
+main = 205
 main2 = int(main / 2)
 
 fig, ax = plt.subplots()
@@ -58,11 +58,16 @@ test_colors = test[:, 2]
 # print(test_colors)
 # exit(0)
 
+vmin = -10
+vmax = 50
+
+s = ((ax.get_window_extent().width / (vmax - vmin + 1.) * 72. / fig.dpi))
+
 # mat, = ax.plot(test[:, 0], test[:, 1], c = C / 255.0, marker='o')
 # mat, = ax.plot(test[:, 0], test[:, 1], color=[get_colour(i) for i in test[:, 2]], marker='o')
 # mat, = ax.scatter(test[:, 0], test[:, 1], c=np.apply_along_axis(lambda x: [0,1.0,0], 1, test), marker='o')
-mat1, = ax.plot(test[:main2, 0], test[:main2, 1], c='g', linestyle='None', marker='o')
-mat2, = ax.plot(test[main2:, 0], test[main2:, 1], c='m', linestyle='None', marker='o')
+mat1, = ax.plot(test[:main2, 0], test[:main2, 1], c='g', linestyle='None', marker='o', markersize=2 * s)
+mat2, = ax.plot(test[main2:, 0], test[main2:, 1], c='m', linestyle='None', marker='o', markersize=2 * s)
 
 
 def init():
