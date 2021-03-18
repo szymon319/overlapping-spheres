@@ -109,13 +109,13 @@ def forces_total(pt, ptspts, old, counter, equation="inverse"):
             sum += force
         elif equation == "paper":
             decay_const = 5.0
-            spring_const = 2.5
+            spring_const = 25
 
             if distance < 2:
-                if pt_cell_type == pointpt_cell_type:
-                    spring_const *= 10
                 force = spring_const * 2.0 * np.log1p(0.5 * deviation) * unit_pt_to_pointpt
             else:
+                if pt_cell_type != pointpt_cell_type:
+                    spring_const *= 0.1
                 force = spring_const * deviation * np.exp(-0.5 * decay_const * deviation) * unit_pt_to_pointpt
             # if counter < 100:
             #     force2 = 5 * force_base
@@ -125,9 +125,9 @@ def forces_total(pt, ptspts, old, counter, equation="inverse"):
         else:
             raise ValueError
 
-        mu = 0
-        sigma = 1
-        strength = 5.0
+    mu = 0
+    sigma = 1
+    strength = 5.0
 
     sum += strength * np.random.normal(mu, sigma, 2)
 
