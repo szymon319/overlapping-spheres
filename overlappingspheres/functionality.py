@@ -64,45 +64,43 @@ def randomly_scatter(n, poly):
 
 def forces_total(pt, ptspts, old, counter, equation="inverse"):
     """
-    A function that takes a name and returns a greeting.
-
+    Calculates the total force on pt as a result of all other points ptspts
     Parameters
     ----------
-    name : str, optional
-        The name to greet (default is "")
+    pt the current cell
+    ptspts the other cells
+    old ??? no idea
+    counter ??? no idea
+    equation which force function to use
 
     Returns
     -------
-    str
-        The greeting
+    the total force acing on the cell pt
     """
-    sum = [0, 0]
-
     if old == "news":
-        # pts = cutoff(pt, ptspts, 0.05)
-        pts = cutoff(pt, ptspts, 5)
+        pts = cutoff(pt, ptspts, 4)
     elif old == "old":
         pts = ptspts
     else:
         raise ValueError
 
-    # for pointpt in pts:
+    total_force = np.zeros(2)
+
     for pointpt in pts:
-        if pointpt[0] == pt[0] and pointpt[1] == pt[1]:
+
+        this_pos = np.array([pt[0], pt[1]])
+        other_pos = np.array([pointpt[0], pointpt[1]])
+
+        this_cell_type = pt[2]
+        other_cell_type = pointpt[2]
+
+        if np.allclose(this_pos, other_pos):
             continue
-        # deltaX = point.x - pt.x
-        # deltaY = point.y - pt.y
-        deltaX = pointpt[0] - pt[0]
-        deltaY = pointpt[1] - pt[1]
 
-        angleInDegrees = math.atan2(deltaY, deltaX) * 180 / math.pi
-        # print(angleInDegrees)
-
-        # distance = pt.distance(point)
-        distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
-        # epsilon = 0.05
-        # threshold2 = 1 / 2
-        threshold5 = 1 / 5
+        this_to_other = other_pos - this_pos
+        distance = np.linalg.norm(this_to_other)
+        deviation = distance - 2.0
+        unit_this_to_other = this_to_other / distance
 
         if equation == "inverse":
             force = 1 / distance
@@ -122,15 +120,23 @@ def forces_total(pt, ptspts, old, counter, equation="inverse"):
         #     else:
         #         force2 = force_base * 10
         elif equation == "paper":
+
+            # Calculate the spring constant, which is reduced in the case of heterogeneous
+            # interactions between cells further apart than their rest length
+            spring_const = 25
+            if distance > 2 and this_cell_type != other_cell_type:
+                spring_const *= 0.1
+            decay_const = 5.0
+
+            # Calculate the force based on the equation on Page 7 of Osborne et al
             if distance < 2:
-                force_base = - 2 * math.log(1 + (distance - 2) / 2)
+                force = spring_const * 2.0 * np.log1p(0.5 * deviation) * unit_this_to_other
             else:
-                force_base = + (distance - 2) * math.exp(- 5 * (distance - 2) / 2)
-            force = 5 * force_base
-            if counter < 100:
-                force2 = 5 * force_base
-            else:
-                force2 = 50 * force_base
+                force = spring_const * deviation * np.exp(-0.5 * decay_const * deviation) * unit_this_to_other
+
+            total_force += force
+            # print(f"this: {this_pos}, other: {other_pos}, dist: {distance}, force: {force}")
+
         # elif equation == "Overlapping spheres":
         #     if distance > threshold2:
         #         force = 0
@@ -146,20 +152,13 @@ def forces_total(pt, ptspts, old, counter, equation="inverse"):
         else:
             raise ValueError
 
-        mu = 0
-        sigma = threshold5
-        # print(pointpt)
-        if pointpt[2] == pt[2]:
-            forceX = - force * math.cos(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
-            forceY = - force * math.sin(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
-        else:
-            forceX = - force2 * math.cos(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
-            forceY = - force2 * math.sin(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
+    # Add on the random force
+    normal_mean = 0
+    normal_std = 1
+    normal_strength = 5.0
+    total_force += normal_strength * np.random.normal(normal_mean, normal_std, 2)
 
-        sum[0] += forceX
-        sum[1] += forceY
-
-    return sum
+    return total_force
 
 
 def advance(board, timestamp, old, my_counter):
