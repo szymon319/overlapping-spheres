@@ -76,88 +76,60 @@ def forces_total(pt, ptspts, old, counter, equation="inverse"):
     str
         The greeting
     """
-    sum = [0, 0]
+    sum = np.zeros(2)
 
     if old == "news":
-        # pts = cutoff(pt, ptspts, 0.05)
-        pts = cutoff(pt, ptspts, 5)
+        pts = cutoff(pt, ptspts, 4)
     elif old == "old":
         pts = ptspts
     else:
         raise ValueError
 
-    # for pointpt in pts:
     for pointpt in pts:
-        if pointpt[0] == pt[0] and pointpt[1] == pt[1]:
+        pt_pos, pt_cell_type = np.array([pt[0], pt[1]]), pt[2]
+        pointpt_pos, pointpt_cell_type = np.array([pointpt[0], pointpt[1]]), pointpt[2]
+
+        if np.allclose(pt_pos, pointpt_pos):
             continue
         # deltaX = point.x - pt.x
         # deltaY = point.y - pt.y
-        deltaX = pointpt[0] - pt[0]
-        deltaY = pointpt[1] - pt[1]
+        # deltaX = pointpt[0] - pt[0]
+        # deltaY = pointpt[1] - pt[1]
 
-        angleInDegrees = math.atan2(deltaY, deltaX) * 180 / math.pi
-        # print(angleInDegrees)
+        pt_to_pointpt = pointpt_pos - pt_pos
+        distance = np.linalg.norm(pt_to_pointpt)
+        deviation = distance - 2.0
 
-        # distance = pt.distance(point)
-        distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
-        # epsilon = 0.05
-        # threshold2 = 1 / 2
-        threshold5 = 1 / 5
+        unit_pt_to_pointpt = pt_to_pointpt / distance
+        # angleInDegrees = math.atan2(deltaY, deltaX) * 180 / math.pi
+        # distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
 
         if equation == "inverse":
-            force = 1 / distance
-            force2 = 1 / distance
-        # elif equation == "inverse square":
-        #     # force = + ((1 / (distance + threshold5)) ** 2) - (1 / (distance + threshold5))
-        #     force_base = + ((1 / (distance + 2 * threshold5)) ** 2) - (1 / (distance + threshold5))
-        #     if distance < 1.707:
-        #         force = 1 / distance
-        #     else:
-        #         force = force_base
-
-        #     if distance > 2:
-        #         force2 = force_base * 1 / 10
-        #     elif distance < 1.707:
-        #         force2 = 10 / distance
-        #     else:
-        #         force2 = force_base * 10
+            force = unit_pt_to_pointpt / distance
+            sum += force
         elif equation == "paper":
+            decay_const = 5.0
+            spring_const = 2.5
+
             if distance < 2:
-                force_base = - 2 * math.log(1 + (distance - 2) / 2)
+                if pt_cell_type == pointpt_cell_type:
+                    spring_const *= 10
+                force = spring_const * 2.0 * np.log1p(0.5 * deviation) * unit_pt_to_pointpt
             else:
-                force_base = + (distance - 2) * math.exp(- 5 * (distance - 2) / 2)
-            force = 5 * force_base
-            if counter < 100:
-                force2 = 5 * force_base
-            else:
-                force2 = 50 * force_base
-        # elif equation == "Overlapping spheres":
-        #     if distance > threshold2:
-        #         force = 0
-        #     elif distance > threshold20:
-        #         force = - ((1 / distance) ** (1 / 2))
-        #     else:
-        #         force = 1 / distance
-        # elif equation == "Lennard-Jones":
-        #     if distance > threshold2:
-        #         force = 0
-        #     else:
-        #         force = ((epsilon * 1 / distance) ** 12) - ((epsilon * 1 / distance) ** 6)
+                force = spring_const * deviation * np.exp(-0.5 * decay_const * deviation) * unit_pt_to_pointpt
+            # if counter < 100:
+            #     force2 = 5 * force_base
+            # else:
+            #     force2 = 5 * force_base * factor
+            sum += force
         else:
             raise ValueError
 
         mu = 0
-        sigma = threshold5
-        # print(pointpt)
-        if pointpt[2] == pt[2]:
-            forceX = - force * math.cos(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
-            forceY = - force * math.sin(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
-        else:
-            forceX = - force2 * math.cos(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
-            forceY = - force2 * math.sin(math.radians(angleInDegrees)) + np.random.normal(mu, sigma)
+        sigma = 1
+        strength = 5.0
 
-        sum[0] += forceX
-        sum[1] += forceY
+    sum += strength * np.random.normal(mu, sigma, 2)
 
     return sum
 
