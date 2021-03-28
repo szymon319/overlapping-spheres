@@ -62,7 +62,7 @@ def randomly_scatter(n, poly):
 # unitsquare = Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])
 # print(randomly_scatter(100, unitsquare))
 
-def forces_total(pt, ptspts, old, counter, equation="paper", spring_const=25, strength=5.0):
+def forces_total(pt, ptspts, old, counter, equation="paper", spring_constparameter=25, strengthparameter=5.0):
     """
     A function that takes a name and returns a greeting.
 
@@ -109,7 +109,7 @@ def forces_total(pt, ptspts, old, counter, equation="paper", spring_const=25, st
             sum += force
         elif equation == "paper":
             decay_const = 5.0
-            # spring_const = 25
+            spring_const = spring_constparameter
 
             if distance < 2:
                 force = spring_const * 2.0 * np.log1p(0.5 * deviation) * unit_pt_to_pointpt
@@ -127,14 +127,14 @@ def forces_total(pt, ptspts, old, counter, equation="paper", spring_const=25, st
 
     mu = 0
     sigma = 1
-    # strength = 5.0
+    strength = strengthparameter
 
     sum += strength * np.random.normal(mu, sigma, 2)
 
     return sum
 
 
-def advance(board, timestamp, old, my_counter):
+def advance(board, timestamp, old, my_counter, spring_constparameter=25, strengthparameter=5.0):
     """
     A function taking some arguments and returning the minimum number among the arguments.
 
@@ -152,7 +152,7 @@ def advance(board, timestamp, old, my_counter):
     newstate = []
 
     for pointpt in board:
-        forces_shifted = forces_total(pointpt, board, old, my_counter)
+        forces_shifted = forces_total(pointpt, board, old, my_counter, "paper", spring_constparameter, strengthparameter)
         # print(forces_shifted)
         x_check = pointpt[0] + timestamp * forces_shifted[0]
         y_check = pointpt[1] + timestamp * forces_shifted[1]
