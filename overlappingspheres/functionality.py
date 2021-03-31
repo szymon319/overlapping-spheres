@@ -11,8 +11,8 @@ import matplotlib.animation as animation
 import numpy as np
 import random
 
-np.random.seed(42)
-random.seed(42)
+# np.random.seed(42)
+# random.seed(42)
 
 
 def randompoint_on(poly, celltype: int):
@@ -174,7 +174,7 @@ def advance(board, timestamp, old, my_counter, spring_constparameter=25, strengt
     return np.array(newstate)
 
 
-def shift(noofpoints):
+def shift(noofpoints, seed=42):
     """
     A function taking some arguments and returning the minimum number among the arguments.
 
@@ -188,6 +188,9 @@ def shift(noofpoints):
     int, float
         The minimum
     """
+    np.random.seed(seed)
+    random.seed(seed)
+
     unitsquare = Polygon([(0, 0), (30, 0), (30, 30), (0, 30)])
     # unitsquare = Polygon([(0, 0), (5, 0), (5, 5), (0, 5)])
     pointsg = np.array(randomly_scatter(noofpoints, unitsquare))
@@ -366,7 +369,7 @@ def fractional(board):
             ]
 
             output = list(map(list, zip(l_input[0], map(lambda pt: get_min_point(pt, l_input[1]), l_input[0]))))
-            if board[np.logical_and(output[0][1][0] == board[:, 0], output[0][1][1] == board[:, 1]), 2] == board[np.logical_and(output[1][1][0] == board[:, 0], output[1][1][1] == board[:, 1]), 2]:
+            if board[np.logical_and(output[0][1][0] == board[:, 0], output[0][1][1] == board[:, 1]), 2] != board[np.logical_and(output[1][1][0] == board[:, 0], output[1][1][1] == board[:, 1]), 2]:
                 mmetric += len_vpair
     return mmetric
 

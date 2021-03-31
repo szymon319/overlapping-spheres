@@ -1,6 +1,7 @@
 import itertools
 import numpy as np
 import pandas as pd
+import random
 import time
 
 from overlappingspheres.functionality import advance
@@ -12,28 +13,32 @@ from typing import List
 Vector = List[float]
 
 
-def perform_experiment(relax: bool, spring_constant: Vector, random_strength: Vector):
+def perform_experiment(relax: bool, spring_constant: Vector, random_strength: Vector, seed: Vector):
     d = []
 
-    iterations = int(1e2)
+    iterations = int(1e3)
     # iterations = int(1e4)
 
     """
     We want to loop through the parameters values
     """
 
-    for iterator in itertools.product(spring_constant, random_strength):
+    for iterator in itertools.product(spring_constant, random_strength, seed):
 
         seconds = time.time()
-        test = shift(205)
+        test = shift(205, iterator[2])
         for i in range(iterations):
             if i == int(1e1):
                 test10 = advance(test, 0.015, "news", i, iterator[0], iterator[1])
+            if i == int(1e2):
+                test100 = advance(test, 0.015, "news", i, iterator[0], iterator[1])
             test = advance(test, 0.015, "news", i, iterator[0], iterator[1])
         metric1 = metricpoints(test)
         metric2 = fractional(test)
         m10etric1 = metricpoints(test10)
         m10etric2 = fractional(test10)
+        m100etric1 = metricpoints(test100)
+        m100etric2 = fractional(test100)
         runningtime = (time.time() - seconds)
 
         filter0 = np.asarray([0])
@@ -42,12 +47,15 @@ def perform_experiment(relax: bool, spring_constant: Vector, random_strength: Ve
         filterd1 = test[np.in1d(test[:, 2], filter1)]
         f10ilterd0 = test10[np.in1d(test10[:, 2], filter0)]
         f10ilterd1 = test10[np.in1d(test10[:, 2], filter1)]
+        f100ilterd0 = test100[np.in1d(test100[:, 2], filter0)]
+        f100ilterd1 = test100[np.in1d(test100[:, 2], filter1)]
 
         d.append(
             {
                 'relax': relax,
                 'spring_constant': iterator[0],
                 'random_strength': iterator[1],
+                'seed': iterator[2],
                 'iterations': iterations,
                 'runningtime': runningtime,
                 'Distance metric': metric1,
@@ -62,6 +70,22 @@ def perform_experiment(relax: bool, spring_constant: Vector, random_strength: Ve
                 'relax': relax,
                 'spring_constant': iterator[0],
                 'random_strength': iterator[1],
+                'seed': iterator[2],
+                'iterations': 101,
+                'runningtime': runningtime,
+                'Distance metric': m100etric1,
+                'Fractional length': m100etric2,
+                '0 points': np.delete(f100ilterd0, np.s_[2:3], axis=1),
+                '1 points': np.delete(f100ilterd1, np.s_[2:3], axis=1)
+            }
+        )
+
+        d.append(
+            {
+                'relax': relax,
+                'spring_constant': iterator[0],
+                'random_strength': iterator[1],
+                'seed': iterator[2],
                 'iterations': 11,
                 'runningtime': runningtime,
                 'Distance metric': m10etric1,
@@ -77,4 +101,4 @@ def perform_experiment(relax: bool, spring_constant: Vector, random_strength: Ve
     return df1
 
 
-print(perform_experiment(False, [25, 50], [5.0, 10.0]))
+print(perform_experiment(False, [25, 50], [5.0, 10.0], random.sample(range(10, 50), 10)))

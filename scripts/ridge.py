@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 unitsquare = Polygon([(0, 0), (30, 0), (30, 30), (0, 30)])
-mrandom = np.array(randomly_scatter(50, unitsquare))
+mrandom = np.array(randomly_scatter(5, unitsquare))
 
 # print(mrandom[3, 0])
 # print(np.isclose(mrandom[3, 0], 26.76538703))
@@ -21,7 +21,7 @@ mpoints = np.delete(mrandom, np.s_[2:3], axis=1)
 #                    [2, 0], [2, 1], [2, 2]])
 vor = Voronoi(mpoints)
 
-print(vor.ridge_vertices)
+# print(vor.ridge_vertices)
 
 # fig = plt.figure()
 # plt.plot(vor.vertices[:, 0], vor.vertices[:, 1], 'ko', ms=8)
@@ -67,13 +67,14 @@ for vpair in vor.ridge_vertices:
 
         # len_vpair = math.hypot(v1[0] - v0[0], v1[1] - v0[1])
         len_vpair = math.sqrt(sq_distance(v0, v1))
+        print(len_vpair)
 
         center_vpair = np.array([0.5 * (v1[0] + v0[0]), 0.5 * (v1[1] + v0[1])])
-        print(center_vpair)
+        # print(center_vpair)
 
         slope_vpair = slope(v0[0], v0[1], center_vpair[0], center_vpair[1])
         # print(type(slope_vpair))
-        print(slope_vpair)
+        # print(slope_vpair)
 
         if slope_vpair == "vertical":
             dy = 0
@@ -105,7 +106,7 @@ for vpair in vor.ridge_vertices:
         print(output)
         print(output[0][1])
 
-        if mrandom[np.logical_and(output[0][1][0] == mrandom[:, 0], output[0][1][1] == mrandom[:, 1]), 2] == mrandom[np.logical_and(output[1][1][0] == mrandom[:, 0], output[1][1][1] == mrandom[:, 1]), 2]:
+        if mrandom[np.logical_and(output[0][1][0] == mrandom[:, 0], output[0][1][1] == mrandom[:, 1]), 2] != mrandom[np.logical_and(output[1][1][0] == mrandom[:, 0], output[1][1][1] == mrandom[:, 1]), 2]:
             mmetric += len_vpair
 
 print(mmetric)
