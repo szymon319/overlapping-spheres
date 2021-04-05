@@ -1,25 +1,25 @@
-from shapely.geometry import LineString, Point, Polygon
+# from shapely.geometry import LineString, Point, Polygon
 
-import math
-import matplotlib as mpl
+# import math
+# import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import numpy as np
-import random
+# import numpy as np
+# import random
 
-from overlappingspheres.functionality import randompoint_on
-from overlappingspheres.functionality import randomly_scatter
-from overlappingspheres.functionality import forces_total
+# from overlappingspheres.functionality import randompoint_on
+# from overlappingspheres.functionality import randomly_scatter
+# from overlappingspheres.functionality import forces_total
 from overlappingspheres.functionality import advance
 from overlappingspheres.functionality import shift
 # from overlappingspheres.functionality import animate
-from overlappingspheres.functionality import cutoff
-from overlappingspheres.functionality import fractional
+# from overlappingspheres.functionality import cutoff
+# from overlappingspheres.functionality import fractional
 from overlappingspheres.functionality import metricpoints
 
-pt = np.array([0.01, 0, 1])
+# pt = np.array([0.01, 0, 1])
 # print(pt[0])
-pts = np.array([[0, 0, 1], [5, 0, 1], [0.02, 0, 1]])
+# pts = np.array([[0, 0, 1], [5, 0, 1], [0.02, 0, 1]])
 # print(pts)
 # print(cutoff(pt, pts, 0.01))
 
@@ -27,11 +27,11 @@ pts = np.array([[0, 0, 1], [5, 0, 1], [0.02, 0, 1]])
 # shiftedm = set(shift(100))
 
 
-def get_colour(t):
-    if t == 0:
-        return 'g'
-    else:
-        return 'm'
+# def get_colour(t):
+#     if t == 0:
+#         return 'g'
+#     else:
+#         return 'm'
 
 
 # main = 100
@@ -49,8 +49,8 @@ test = shift(main)
 # xg, yg = zip(*shiftedg)
 # xm, ym = zip(*shiftedm)
 
-C = np.array([[255, 0, 0], [0, 255, 0], [0, 0, 255]])
-test_colors = test[:, 2]
+# C = np.array([[255, 0, 0], [0, 255, 0], [0, 0, 255]])
+# test_colors = test[:, 2]
 # print(test_colors.shape)
 # exit(0)
 
@@ -66,17 +66,17 @@ s = ((ax.get_window_extent().width / (vmax - vmin + 1.) * 72. / fig.dpi))
 # mat, = ax.plot(test[:, 0], test[:, 1], c = C / 255.0, marker='o')
 # mat, = ax.plot(test[:, 0], test[:, 1], color=[get_colour(i) for i in test[:, 2]], marker='o')
 # mat, = ax.scatter(test[:, 0], test[:, 1], c=np.apply_along_axis(lambda x: [0,1.0,0], 1, test), marker='o')
-mat1, = ax.plot(test[:main2, 0], test[:main2, 1], c='g', linestyle='None', marker='o', markersize=2 * s)
-mat2, = ax.plot(test[main2:, 0], test[main2:, 1], c='m', linestyle='None', marker='o', markersize=2 * s)
+mat1, = ax.plot(test[:main2, 0], test[:main2, 1], c="g", linestyle="None", marker="o", markersize=2 * s)
+mat2, = ax.plot(test[main2:, 0], test[main2:, 1], c="m", linestyle="None", marker="o", markersize=2 * s)
 
 
 def init():
     mat1.set_data([], [])
     mat2.set_data([], [])
-    return mat1,
+    return mat1, mat2
 
 
-xsfractional = []
+# xsfractional = []
 
 my_ccounter = 0
 
@@ -122,7 +122,7 @@ def animate(i):
     # mat, = ax.plot(xg, yg, color='green', marker='o')
     # print(type(xg))
     # print((xg))
-    xsfractional.append(metricpoints(test))
+    # xsfractional.append(metricpoints(test))
     print(metricpoints(test))
     # mat.set_data(xsg, ysg)
     mat1.set_data(test[:main2, 0], test[:main2, 1])

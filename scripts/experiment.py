@@ -14,15 +14,33 @@ Vector = List[float]
 
 
 def perform_experiment(relax: bool, spring_constant: Vector, random_strength: Vector, seed: Vector):
+    """
+    A function that takes potential values of parameters and returns a dataframe with experiment results
+    for all possible combinations of these parameters.
+
+    Parameters
+    ----------
+    relax : bool
+        Whether we implement Lloyd's algorithm before the mechanical descriptions of cell-cell interactions are derived
+    spring_constant : list[float]
+        List of values of the spring constant parameter to test
+    random_strength : list[float]
+        List of values of the random force strength parameter to test
+    seed : list[float]
+        List of values of the state of random functions to observe varying behaviour
+
+    Returns
+    -------
+    pandas.DataFrame
+        The dataframe with experiment results
+    """
+
     d = []
 
+    # choosing the maximum number of iterations we want performed in the experiment
     iterations = int(1e3)
-    # iterations = int(1e4)
 
-    """
-    We want to loop through the parameters values
-    """
-
+    # We want to loop through all possible combinations of parameter values
     for iterator in itertools.product(spring_constant, random_strength, seed):
 
         seconds = time.time()
