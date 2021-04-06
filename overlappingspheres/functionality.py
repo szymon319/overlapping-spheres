@@ -105,7 +105,7 @@ def forces_total(pt, ptspts, old, counter, equation="paper", spring_constparamet
         # distance = math.sqrt(((pointpt[0] - pt[0]) ** 2) + ((pointpt[1] - pt[1]) ** 2))
 
         if equation == "inverse":
-            force = unit_pt_to_pointpt / distance
+            force = - unit_pt_to_pointpt
             sum += force
         elif equation == "paper":
             decay_const = 5.0
@@ -154,20 +154,16 @@ def advance(board, timestamp, old, my_counter, spring_constparameter=25, strengt
     for pointpt in board:
         forces_shifted = forces_total(pointpt, board, old, my_counter, "paper", spring_constparameter, strengthparameter)
         # print(forces_shifted)
-        x_check = pointpt[0] + timestamp * forces_shifted[0]
-        y_check = pointpt[1] + timestamp * forces_shifted[1]
+        x_coord = x_check = pointpt[0] + timestamp * forces_shifted[0]
+        y_coord = y_check = pointpt[1] + timestamp * forces_shifted[1]
         if x_check > 30:
             x_coord = 30
         elif x_check < 0:
             x_coord = 0
-        else:
-            x_coord = x_check
         if y_check > 30:
             y_coord = 30
         elif y_check < 0:
             y_coord = 0
-        else:
-            y_coord = y_check
         newstate.append([x_coord, y_coord, pointpt[2]])
         # print(newstate)
 
