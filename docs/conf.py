@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'overlapping-spheres'
-copyright = '2021, Szymon'
-author = 'Szymon'
+copyright = '2021, '
+author = '1036800'
 
 
 # -- General configuration ---------------------------------------------------
